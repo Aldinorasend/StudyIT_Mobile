@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:studyit/screen/HomePage.dart';

@@ -1,4 +1,4 @@
-# studyit
+# studyit_mobile
 
 A new Flutter project.
 
