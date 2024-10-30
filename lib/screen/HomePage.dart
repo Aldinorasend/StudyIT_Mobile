@@ -1,5 +1,4 @@
 // ignore: file_names
-import 'package:google_fonts/google_fonts.dart';
 // Use flutter_asset_manifest.AssetManifest or google_fonts_asset_manifest.AssetManifest
 
 import 'package:flutter/material.dart';
