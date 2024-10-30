@@ -1,6 +1,6 @@
 {
-    "name": "studyit",
-    "short_name": "studyit",
+    "name": "studyit_mobile",
+    "short_name": "studyit_mobile",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
