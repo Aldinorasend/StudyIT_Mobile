@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:studyit/package/NavbarBottom.dart';
 
@@ -272,43 +273,96 @@ class HomePageBody extends StatelessWidget {
                           ),
                         ),
                         // Card 3
-                        Container(
-                          width: 191,
-                          height: 153,
-                          decoration: BoxDecoration(
+                        GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
+                                duration: Duration(
+                                    seconds: 2), // Durasi snackbar muncul
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 191,
+                            height: 153,
+                            decoration: BoxDecoration(
                               color: AppColors.secondaryColor,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Image
-                              Container(
-                                width: 191,
-                                height: 97.36,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage("lib/images/uiux.jpg"),
-                                      fit: BoxFit.cover,
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Image with overlay and lock icon
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width: 191,
+                                      height: 97.36,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image:
+                                              AssetImage("lib/images/uiux.jpg"),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        color: AppColors.buttonColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
                                     ),
-                                    color: AppColors.buttonColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                              ),
-                              // Title
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 8.0, left: 5.0),
-                                child: Text(
-                                  "UI-UX Beginner Class",
-                                  style: TextStyle(
-                                      fontSize: 13, color: AppColors.textColor),
+                                    // Overlay
+                                    Container(
+                                      width: 191,
+                                      height: 153,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.5),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                    ),
+                                    // Lock Icon and Text
+                                    Positioned(
+                                      top: 45,
+                                      left: 85,
+                                      child: Icon(
+                                        Icons.lock,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 70,
+                                      left: 25,
+                                      child: Text(
+                                        "Unlock With Subscription",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 110.0, left: 5.0),
+                                      child: Text(
+                                        "UI-UX Expert Class",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            color: AppColors.textColor),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              )
-                            ],
+                                // Title
+                              ],
+                            ),
                           ),
                         ),
+
                         // Card 4
                         Container(
                           width: 191,
