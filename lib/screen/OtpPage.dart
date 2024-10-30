@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OtpPage extends StatelessWidget {
+  const OtpPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -9,20 +11,20 @@ class OtpPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             // Aksi saat tombol kembali ditekan
           },
         ),
       ),
-      backgroundColor: Color(0xFF113F67), // Warna latar belakang sesuai gambar
+      backgroundColor: const Color(0xFF113F67), // Warna latar belakang sesuai gambar
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50), // Memberikan jarak dari atas
-            Text(
+            const SizedBox(height: 50), // Memberikan jarak dari atas
+            const Text(
               'Forgot Your Password?',
               style: TextStyle(
                 fontSize: 24,
@@ -30,22 +32,22 @@ class OtpPage extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               decoration: InputDecoration(
                 hintText: 'Enter your Email below',
-                hintStyle: TextStyle(color: Colors.white),
+                hintStyle: const TextStyle(color: Colors.white),
                 filled: true,
-                fillColor: Color(0xFF083358), // Warna input field
+                fillColor: const Color(0xFF083358), // Warna input field
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
                 ),
               ),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               keyboardType: TextInputType.emailAddress,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -58,12 +60,12 @@ class OtpPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Continue',
                   selectionColor: Color(0xFF0E4373),
                 ),
@@ -77,6 +79,8 @@ class OtpPage extends StatelessWidget {
 }
 
 class OTPVerificationScreen extends StatefulWidget {
+  const OTPVerificationScreen({super.key});
+
   @override
   _OTPVerificationScreenState createState() => _OTPVerificationScreenState();
 }
@@ -120,20 +124,20 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-      backgroundColor: Color(0xFF113F67), // Warna latar belakang sesuai gambar
+      backgroundColor: const Color(0xFF113F67), // Warna latar belakang sesuai gambar
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50), // Memberikan jarak dari atas
-            Text(
+            const SizedBox(height: 50), // Memberikan jarak dari atas
+            const Text(
               'OTP Verification',
               style: TextStyle(
                 fontSize: 24,
@@ -141,15 +145,15 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               'Open your Email to see your verification code',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -159,7 +163,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 _buildOTPField(index: 3),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -167,12 +171,12 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   // Aksi ketika tombol OTP ditekan
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Continue',
                   selectionColor: Color(0xFF0E4373),
                 ),
@@ -194,14 +198,14 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         focusNode: _focusNodes[index],
         decoration: InputDecoration(
           filled: true,
-          fillColor: Color(0xFF083358), // Warna kotak OTP
+          fillColor: const Color(0xFF083358), // Warna kotak OTP
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide.none,
           ),
           counterText: "",
         ),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 24,
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -217,7 +221,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
           }
         },
         onTap: () {
-          _controllers[index].selection = TextSelection.collapsed(offset: 0);
+          _controllers[index].selection = const TextSelection.collapsed(offset: 0);
         },
       ),
     );
