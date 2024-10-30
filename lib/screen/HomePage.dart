@@ -23,9 +23,9 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0; // To handle the current index of the navbar
 
   final List<Widget> _pages = [
-    HomePageBody(), // Page content for the home
-    Center(child: Text("Search Page")), // Dummy page for search
-    Center(child: Text("Profile Page")), // Dummy page for profile
+    const HomePageBody(), // Page content for the home
+    const Center(child: Text("Search Page")), // Dummy page for search
+    const Center(child: Text("Profile Page")), // Dummy page for profile
   ];
 
   void _onTabTapped(int index) {
@@ -47,6 +47,8 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageBody extends StatelessWidget {
+  const HomePageBody({super.key});
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -66,7 +68,7 @@ class HomePageBody extends StatelessWidget {
                   Container(
                     height: MediaQuery.of(context).size.height * 0.6,
                     width: MediaQuery.of(context).size.width * 1,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("lib/images/background.png"),
                         fit: BoxFit.cover,
@@ -74,13 +76,13 @@ class HomePageBody extends StatelessWidget {
                       color: AppColors.buttonColor,
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           top: 150, right: 20, left: 20, bottom: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Spacer(),
-                          Text(
+                          const Spacer(),
+                          const Text(
                             "From Beginner to Pro: Your IT Career Starts Here",
                             style: TextStyle(
                                 color: AppColors.textColor,
@@ -88,8 +90,8 @@ class HomePageBody extends StatelessWidget {
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(height: 10),
-                          Text(
+                          const SizedBox(height: 10),
+                          const Text(
                             "Expand your Skills and hone your Abilities with our Bootcamps",
                             style: TextStyle(
                                 fontSize: 14,
@@ -97,24 +99,24 @@ class HomePageBody extends StatelessWidget {
                                 color: AppColors.textColor,
                                 fontWeight: FontWeight.w400),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Container(
                             width: 160,
                             height: 40,
-                            padding: EdgeInsets.all(3),
+                            padding: const EdgeInsets.all(3),
                             child: ElevatedButton(
                               onPressed: () {},
-                              child: Text(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryColor,
+                              ),
+                              child: const Text(
                                 "Upgrade Your Package",
                                 style: TextStyle(
                                     fontSize: 11, fontFamily: 'Inter'),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryColor,
-                              ),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                         ],
                       ),
                     ),
@@ -123,7 +125,7 @@ class HomePageBody extends StatelessWidget {
                   Container(
                     height: 100,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(24),
                         bottomRight: Radius.circular(24),
@@ -135,7 +137,7 @@ class HomePageBody extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Welcome, Aldino",
                             style: TextStyle(
                                 fontSize: 17, color: AppColors.textColor),
@@ -148,20 +150,20 @@ class HomePageBody extends StatelessWidget {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text("Warning"),
-                                          content: Text("Search Feature"),
+                                          title: const Text("Warning"),
+                                          content: const Text("Search Feature"),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
-                                              child: Text("Close"),
+                                              child: const Text("Close"),
                                             )
                                           ],
                                         );
                                       });
                                 },
-                                child: CircleAvatar(
+                                child: const CircleAvatar(
                                   backgroundColor: AppColors.secondaryColor,
                                   child: Icon(
                                     Icons.search,
@@ -169,8 +171,8 @@ class HomePageBody extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10),
-                              CircleAvatar(
+                              const SizedBox(width: 10),
+                              const CircleAvatar(
                                 backgroundColor: AppColors.secondaryColor,
                                 child: Icon(
                                   Icons.account_circle,
@@ -192,8 +194,8 @@ class HomePageBody extends StatelessWidget {
               children: [
                 Container(
                   width: screenWidth,
-                  decoration: BoxDecoration(color: AppColors.textColor),
-                  margin: EdgeInsets.only(top: 15),
+                  decoration: const BoxDecoration(color: AppColors.textColor),
+                  margin: const EdgeInsets.only(top: 15),
                   child: Center(
                     child: Wrap(
                       spacing: 10,
@@ -203,7 +205,7 @@ class HomePageBody extends StatelessWidget {
                         Container(
                           width: 160,
                           height: 143,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: AppColors.secondaryColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
@@ -215,7 +217,7 @@ class HomePageBody extends StatelessWidget {
                               Container(
                                 width: 191,
                                 height: 97.36,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage("lib/images/uiux.jpg"),
                                       fit: BoxFit.cover,
@@ -225,9 +227,9 @@ class HomePageBody extends StatelessWidget {
                                         BorderRadius.all(Radius.circular(10))),
                               ),
                               // Title
-                              Padding(
+                              const Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 8.0, left: 5.0),
+                                    EdgeInsets.only(top: 8.0, left: 5.0),
                                 child: Text(
                                   "UI-UX Beginner Class",
                                   style: TextStyle(
@@ -241,7 +243,7 @@ class HomePageBody extends StatelessWidget {
                         Container(
                           width: 160,
                           height: 143,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: AppColors.secondaryColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
@@ -253,7 +255,7 @@ class HomePageBody extends StatelessWidget {
                               Container(
                                 width: 191,
                                 height: 97.36,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage("lib/images/uiux.jpg"),
                                       fit: BoxFit.cover,
@@ -263,9 +265,9 @@ class HomePageBody extends StatelessWidget {
                                         BorderRadius.all(Radius.circular(10))),
                               ),
                               // Title
-                              Padding(
+                              const Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 8.0, left: 5.0),
+                                    EdgeInsets.only(top: 8.0, left: 5.0),
                                 child: Text(
                                   "UI-UX Beginner Class",
                                   style: TextStyle(
@@ -279,7 +281,7 @@ class HomePageBody extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text(
                                     "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
                                 duration: Duration(
@@ -290,7 +292,7 @@ class HomePageBody extends StatelessWidget {
                           child: Container(
                             width: 160,
                             height: 143,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppColors.secondaryColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
@@ -305,7 +307,7 @@ class HomePageBody extends StatelessWidget {
                                     Container(
                                       width: 191,
                                       height: 97.36,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         image: DecorationImage(
                                           image:
                                               AssetImage("lib/images/uiux.jpg"),
@@ -322,12 +324,12 @@ class HomePageBody extends StatelessWidget {
                                       height: 143,
                                       decoration: BoxDecoration(
                                         color: Colors.black.withOpacity(0.5),
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
                                       ),
                                     ),
                                     // Lock Icon and Text
-                                    Positioned(
+                                    const Positioned(
                                       top: 55,
                                       left: 75,
                                       child: Icon(
@@ -336,7 +338,7 @@ class HomePageBody extends StatelessWidget {
                                         size: 10,
                                       ),
                                     ),
-                                    Positioned(
+                                    const Positioned(
                                       bottom: 55,
                                       left: 15,
                                       child: Text(
@@ -348,8 +350,8 @@ class HomePageBody extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
+                                    const Padding(
+                                      padding: EdgeInsets.only(
                                           top: 110.0, left: 5.0),
                                       child: Text(
                                         "UI-UX Medium Class",
@@ -370,7 +372,7 @@ class HomePageBody extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text(
                                     "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
                                 duration: Duration(
@@ -381,7 +383,7 @@ class HomePageBody extends StatelessWidget {
                           child: Container(
                             width: 160,
                             height: 143,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppColors.secondaryColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
@@ -396,7 +398,7 @@ class HomePageBody extends StatelessWidget {
                                     Container(
                                       width: 191,
                                       height: 97.36,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         image: DecorationImage(
                                           image:
                                               AssetImage("lib/images/uiux.jpg"),
@@ -413,12 +415,12 @@ class HomePageBody extends StatelessWidget {
                                       height: 143,
                                       decoration: BoxDecoration(
                                         color: Colors.black.withOpacity(0.5),
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
                                       ),
                                     ),
                                     // Lock Icon and Text
-                                    Positioned(
+                                    const Positioned(
                                       top: 55,
                                       left: 75,
                                       child: Icon(
@@ -427,7 +429,7 @@ class HomePageBody extends StatelessWidget {
                                         size: 10,
                                       ),
                                     ),
-                                    Positioned(
+                                    const Positioned(
                                       bottom: 55,
                                       left: 15,
                                       child: Text(
@@ -439,8 +441,8 @@ class HomePageBody extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
+                                    const Padding(
+                                      padding: EdgeInsets.only(
                                           top: 110.0, left: 5.0),
                                       child: Text(
                                         "UI-UX Medium Class",
@@ -460,7 +462,7 @@ class HomePageBody extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text(
                                     "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
                                 duration: Duration(
@@ -471,7 +473,7 @@ class HomePageBody extends StatelessWidget {
                           child: Container(
                             width: 160,
                             height: 143,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppColors.secondaryColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
@@ -486,7 +488,7 @@ class HomePageBody extends StatelessWidget {
                                     Container(
                                       width: 191,
                                       height: 97.36,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         image: DecorationImage(
                                           image:
                                               AssetImage("lib/images/uiux.jpg"),
@@ -503,12 +505,12 @@ class HomePageBody extends StatelessWidget {
                                       height: 143,
                                       decoration: BoxDecoration(
                                         color: Colors.black.withOpacity(0.5),
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
                                       ),
                                     ),
                                     // Lock Icon and Text
-                                    Positioned(
+                                    const Positioned(
                                       top: 55,
                                       left: 75,
                                       child: Icon(
@@ -517,7 +519,7 @@ class HomePageBody extends StatelessWidget {
                                         size: 10,
                                       ),
                                     ),
-                                    Positioned(
+                                    const Positioned(
                                       bottom: 55,
                                       left: 15,
                                       child: Text(
@@ -529,8 +531,8 @@ class HomePageBody extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
+                                    const Padding(
+                                      padding: EdgeInsets.only(
                                           top: 110.0, left: 5.0),
                                       child: Text(
                                         "UI-UX Expert Class",
@@ -550,7 +552,7 @@ class HomePageBody extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text(
                                     "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
                                 duration: Duration(
@@ -561,7 +563,7 @@ class HomePageBody extends StatelessWidget {
                           child: Container(
                             width: 160,
                             height: 143,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppColors.secondaryColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
@@ -576,7 +578,7 @@ class HomePageBody extends StatelessWidget {
                                     Container(
                                       width: 191,
                                       height: 97.36,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         image: DecorationImage(
                                           image:
                                               AssetImage("lib/images/uiux.jpg"),
@@ -593,12 +595,12 @@ class HomePageBody extends StatelessWidget {
                                       height: 143,
                                       decoration: BoxDecoration(
                                         color: Colors.black.withOpacity(0.5),
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10)),
                                       ),
                                     ),
                                     // Lock Icon and Text
-                                    Positioned(
+                                    const Positioned(
                                       top: 55,
                                       left: 75,
                                       child: Icon(
@@ -607,7 +609,7 @@ class HomePageBody extends StatelessWidget {
                                         size: 10,
                                       ),
                                     ),
-                                    Positioned(
+                                    const Positioned(
                                       bottom: 55,
                                       left: 15,
                                       child: Text(
@@ -619,8 +621,8 @@ class HomePageBody extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
+                                    const Padding(
+                                      padding: EdgeInsets.only(
                                           top: 110.0, left: 5.0),
                                       child: Text(
                                         "UI-UX Expert Class",

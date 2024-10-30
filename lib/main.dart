@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:studyit/screen/HomePage.dart';
+import 'package:studyit/screen/EditProfile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,10 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     // Navigate to SecondPage after 3 seconds
-    Timer(Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 1), () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => EditProfileScreen()),
       );
     });
   }
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Container(
             width: 49,
             height: 45,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("lib/images/logo.png"),
                     colorFilter: ColorFilter.mode(
