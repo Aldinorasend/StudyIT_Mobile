@@ -68,6 +68,7 @@ flutter:
     - lib/images/visa.png
     - lib/images/mastercard.png
     - lib/images/amex.png
+    - lib/images/payment.png
     - lib/images/glenn-carstens-peters-P1qyEf1g0HU-unsplash.jpg
     - lib/images/85f69649-5387-44c2-ba45-81ae13812e36-cover.png
     - lib/images/adobe.png

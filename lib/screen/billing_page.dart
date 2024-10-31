@@ -114,18 +114,18 @@ class BillingAddressScreen extends StatelessWidget {
             const SizedBox(height: 45),
             Center(
               child: ElevatedButton(
-                onPressed: () async {
-                  // Panggil notifikasi setelah data disubmit
-                  await NotificationService.showNotification(
-                    id: 0,
-                    title: 'Payment Successful',
-                    body: 'Your billing information has been submitted successfully!',
-                  );
-                  // Navigasi jika diperlukan
-                  Navigator.pop(context);
-                },
+                onPressed: () {
+                  NotificationService.showNotification(
+                  context,
+                  title: 'Payment',
+                  message: 'Payment telah berhasil dibayarkan',
+                  imagePath: 'lib/images/payment.png', // gambar dapat diganti sesuai kebutuhan
+                  duration: const Duration(seconds: 5),
+                );
+              },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: AppColors.primaryColor, backgroundColor: AppColors.buttonColor,
+                  foregroundColor: AppColors.primaryColor,
+                  backgroundColor: AppColors.buttonColor,
                   minimumSize: const Size(double.infinity, 55),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -140,11 +140,11 @@ class BillingAddressScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
+                      ],
+                    ),
+                  ),
+                );
+              }
 
   Widget _buildLabelAndTextField({
     required String label,
