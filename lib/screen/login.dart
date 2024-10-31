@@ -4,6 +4,8 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  LoginScreen({super.key});
+
   void _showDialog(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -12,7 +14,7 @@ class LoginScreen extends StatelessWidget {
           title: Text(message),
           actions: [
             TextButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -48,21 +50,21 @@ class LoginScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    color: Color(0xFF113F67),
+                    icon: const Icon(Icons.arrow_back),
+                    color: const Color(0xFF113F67),
                     onPressed: () {},
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Title
-              Text(
+              const Text(
                 'Login to StudyIT',
                 style: TextStyle(
                   fontSize: 32,
@@ -70,70 +72,72 @@ class LoginScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
 
               // Email Label and TextField
-              Text(
+              const Text(
                 "Email",
                 style: TextStyle(fontSize: 15, color: Colors.white),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.white, width: 1),
+                    borderSide: const BorderSide(color: Colors.white, width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.white, width: 1.5),
+                    borderSide:
+                        const BorderSide(color: Colors.white, width: 1.5),
                   ),
                 ),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Password Label and TextField
-              Text(
+              const Text(
                 "Password",
                 style: TextStyle(fontSize: 15, color: Colors.white),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               TextField(
                 controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.white, width: 1),
+                    borderSide: const BorderSide(color: Colors.white, width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.white, width: 1.5),
+                    borderSide:
+                        const BorderSide(color: Colors.white, width: 1.5),
                   ),
                 ),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Forgot Password Button Aligned Right
               Transform.translate(
-                offset: Offset(-125, 0),
+                offset: const Offset(-125, 0),
                 child: TextButton(
                   onPressed: () {
                     // Add Forgot Password action
                   },
-                  child: Text(
+                  child: const Text(
                     'Forgot Password?',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Login Button
               ElevatedButton(
@@ -141,16 +145,16 @@ class LoginScreen extends StatelessWidget {
                   _login(context); // Panggil fungsi _login saat tombol ditekan
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 15.0),
-                  foregroundColor: Color(0xFF113F67),
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  foregroundColor: const Color(0xFF113F67),
                   backgroundColor: Colors.white,
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(color: Colors.white, width: 1.0),
+                    side: const BorderSide(color: Colors.white, width: 1.0),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Login',
                   style: TextStyle(
                     fontSize: 16,
@@ -160,21 +164,21 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Divider OR
-              Row(
+              const Row(
                 children: [
                   Expanded(child: Divider(color: Colors.white)),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text('OR', style: TextStyle(color: Colors.white)),
                   ),
                   Expanded(child: Divider(color: Colors.white)),
                 ],
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Continue with Google
               ElevatedButton.icon(
@@ -182,25 +186,25 @@ class LoginScreen extends StatelessWidget {
                   // Add Google login action
                 },
                 style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    iconColor: Color(0xFF113F67),
-                    backgroundColor: Color(0xFF113F67),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    iconColor: const Color(0xFF113F67),
+                    backgroundColor: const Color(0xFF113F67),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Colors.white))),
+                        side: const BorderSide(color: Colors.white))),
                 icon: Image.network(
                   'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
                   height: 24.0,
                   width: 24.0,
                 ),
-                label: Text(
+                label: const Text(
                   'Continue with Google',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Continue with Apple
               ElevatedButton.icon(
@@ -208,14 +212,14 @@ class LoginScreen extends StatelessWidget {
                   // Add Apple login action
                 },
                 style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    iconColor: Color(0xFF113F67),
-                    backgroundColor: Color(0xFF113F67),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    iconColor: const Color(0xFF113F67),
+                    backgroundColor: const Color(0xFF113F67),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Colors.white))),
-                icon: Icon(Icons.apple, color: Colors.white),
-                label: Text(
+                        side: const BorderSide(color: Colors.white))),
+                icon: const Icon(Icons.apple, color: Colors.white),
+                label: const Text(
                   'Continue with Apple',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -224,7 +228,7 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Color(0xFF113F67),
+      backgroundColor: const Color(0xFF113F67),
     );
   }
 }
