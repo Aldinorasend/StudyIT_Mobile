@@ -277,7 +277,7 @@ class _NotificationOverlayState extends State<NotificationOverlay>
                                     style: TextButton.styleFrom(
                                       foregroundColor: notificationColor,
                                     ),
-                                    child: const Text('LIHAT'),
+                                    child: const Text('LIHAT'), // Dapat diubah sesuai kebutuhan
                                   ),
                                 ),
                                 Container(
@@ -293,7 +293,7 @@ class _NotificationOverlayState extends State<NotificationOverlay>
                                     style: TextButton.styleFrom(
                                       foregroundColor: notificationColor,
                                     ),
-                                    child: const Text('BISUKAN'),
+                                    child: const Text('BISUKAN'), // Dapat diubah sesuai kebutuhan
                                   ),
                                 ),
                               ],

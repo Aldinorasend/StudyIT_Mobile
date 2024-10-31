@@ -119,8 +119,8 @@ class BillingAddressScreen extends StatelessWidget {
                   context,
                   title: 'Payment',
                   message: 'Payment telah berhasil dibayarkan',
-                  imagePath: 'lib/images/payment.png', 
-                  duration: Duration(seconds: 5),
+                  imagePath: 'lib/images/payment.png', // gambar dapat diganti sesuai kebutuhan
+                  duration: const Duration(seconds: 5),
                 );
               },
                 style: ElevatedButton.styleFrom(
