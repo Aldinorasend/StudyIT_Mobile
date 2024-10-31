@@ -75,6 +75,7 @@ flutter:
     - lib/images/adobe1.jpg
     - lib/images/placenat.mp4
     - lib/images/Modul.png
+    - lib/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
