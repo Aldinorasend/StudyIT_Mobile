@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const HomePageBody(), // Page content for the home
     const CourseScreen(), // Dummy page for search
-    const EditProfile(), // Dummy page for profile
+    const EditProfileScreen(), // Dummy page for profile
   ];
 
   void _onTabTapped(int index) {
