@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:studyit/package/NavbarBottom.dart';
+import 'package:studyit/screen/EditProfile.dart';
+import 'package:studyit/screen/coursePage.dart';
 
 class AppColors {
   static const Color primaryColor = Color(0xFF113F67);
@@ -23,8 +25,8 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     const HomePageBody(), // Page content for the home
-    const Center(child: Text("Search Page")), // Dummy page for search
-    const Center(child: Text("Profile Page")), // Dummy page for profile
+    const CourseScreen(), // Dummy page for search
+    const EditProfileScreen(), // Dummy page for profile
   ];
 
   void _onTabTapped(int index) {
@@ -227,8 +229,7 @@ class HomePageBody extends StatelessWidget {
                               ),
                               // Title
                               const Padding(
-                                padding:
-                                    EdgeInsets.only(top: 8.0, left: 5.0),
+                                padding: EdgeInsets.only(top: 8.0, left: 5.0),
                                 child: Text(
                                   "UI-UX Beginner Class",
                                   style: TextStyle(
@@ -265,8 +266,7 @@ class HomePageBody extends StatelessWidget {
                               ),
                               // Title
                               const Padding(
-                                padding:
-                                    EdgeInsets.only(top: 8.0, left: 5.0),
+                                padding: EdgeInsets.only(top: 8.0, left: 5.0),
                                 child: Text(
                                   "UI-UX Beginner Class",
                                   style: TextStyle(
