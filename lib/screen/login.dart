@@ -19,6 +19,10 @@ class LoginScreen extends StatelessWidget {
               child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
               },
             ),
           ],
@@ -34,10 +38,6 @@ class LoginScreen extends StatelessWidget {
     // Contoh validasi sederhana: email dan password harus sesuai
     if (email == "user@example.com" && password == "password123") {
       _showDialog(context, "Login berhasil");
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
     } else {
       _showDialog(context, "Login gagal");
     }
