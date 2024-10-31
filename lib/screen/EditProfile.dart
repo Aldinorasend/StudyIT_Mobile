@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:studyit/package/NavbarBottom.dart';
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
-
-  @override
-  _EditProfileState createState() => _EditProfileState();
+void main() {
+  runApp(const MyApp());
 }
 
-class _EditProfileState extends State<EditProfile> {
-  int _currentIndex = 0; // To handle the current index of the navbar
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Edit Profile',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const EditProfileScreen(),
+    );
+  }
+}
+
+class AppColors {
+  static const Color primaryColor = Color(0xFF113F67);
+  static const Color secondaryColor = Color(0xFF276AA4);
+  static const Color textColor = Color(0xFFFFFFFF);
+  static const Color buttonColor = Color(0xFFD9D9D9);
+}
+
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
+  @override
+  _EditProfileScreenState createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController nameController =
       TextEditingController(text: 'Aldino');
   final TextEditingController emailController =
@@ -20,33 +43,20 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController addressController =
       TextEditingController(text: 'Jalan palem hijau');
 
-  final List<Widget> _pages = [];
-
+  // Dispose controllers when the widget is removed from the widget tree
   @override
-  void initState() {
-    super.initState();
-    _pages.addAll([
-      EditProfileBody(
-        nameController: nameController,
-        emailController: emailController,
-        phoneController: phoneController,
-        addressController: addressController,
-        onSaveChanges: _saveChanges,
-      ),
-      Center(child: Text("Search Page")), // Dummy page for search
-      Center(child: Text("Profile Page")), // Dummy page for profile
-    ]);
-  }
-
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    addressController.dispose();
+    super.dispose(); // Call the super method after disposing controllers
   }
 
   void _saveChanges() {
+    // Show a snackbar when changes are saved
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Changes saved successfully!'),
         duration: Duration(seconds: 2),
       ),
@@ -54,53 +64,27 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    phoneController.dispose();
-    addressController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: CustomNavbar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
+      appBar: AppBar(
+        backgroundColor: Colors.blue[900],
+        title: const Text('Edit Profile'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
+        ),
       ),
-    );
-  }
-}
-
-class EditProfileBody extends StatelessWidget {
-  final TextEditingController nameController;
-  final TextEditingController emailController;
-  final TextEditingController phoneController;
-  final TextEditingController addressController;
-  final VoidCallback onSaveChanges;
-
-  const EditProfileBody({
-    Key? key,
-    required this.nameController,
-    required this.emailController,
-    required this.phoneController,
-    required this.addressController,
-    required this.onSaveChanges,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Center(
               child: Stack(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 50,
                     backgroundImage: NetworkImage(
                         'https://via.placeholder.com/150'), // Replace with actual profile image URL
@@ -110,9 +94,9 @@ class EditProfileBody extends StatelessWidget {
                     right: 0,
                     child: CircleAvatar(
                       radius: 16,
-                      backgroundColor: Colors.black,
+                      backgroundColor: AppColors.primaryColor,
                       child: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.camera_alt,
                           color: Colors.white,
                           size: 16,
@@ -126,7 +110,7 @@ class EditProfileBody extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             TextField(
               controller: nameController,
               decoration: InputDecoration(
@@ -136,7 +120,7 @@ class EditProfileBody extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -147,7 +131,7 @@ class EditProfileBody extends StatelessWidget {
               ),
               keyboardType: TextInputType.emailAddress,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: phoneController,
               decoration: InputDecoration(
@@ -158,7 +142,7 @@ class EditProfileBody extends StatelessWidget {
               ),
               keyboardType: TextInputType.phone,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: addressController,
               decoration: InputDecoration(
@@ -168,16 +152,16 @@ class EditProfileBody extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: onSaveChanges,
+              onPressed: _saveChanges,
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text('Save Changes'),
+              child: const Text('Save Changes'),
             ),
           ],
         ),
