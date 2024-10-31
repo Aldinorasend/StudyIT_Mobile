@@ -43,10 +43,21 @@ class _PaymentPageState extends State<PaymentPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
-        title: const Text('Payment', style: TextStyle(color: AppColors.textColor)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textColor),
-          onPressed: () => Navigator.pop(context),
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.buttonColor,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: AppColors.primaryColor),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
         ),
       ),
       backgroundColor: AppColors.primaryColor,
@@ -62,10 +73,16 @@ class _PaymentPageState extends State<PaymentPage> {
             const SizedBox(height: 20),
             _buildPaymentMethodSelector(),
             const SizedBox(height: 30),
+            const Text('Name on Card', style: TextStyle(color: AppColors.textColor)),
+            const SizedBox(height: 5),
             _buildPaymentField('Name on Card', nameController, false),
-            const SizedBox(height: 20),
-            _buildPaymentField('Card Number', cardNumberController, true),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
+            const Text('Card Number', style: TextStyle(color: AppColors.textColor)),
+            const SizedBox(height: 5),
+            _buildPaymentField('Card Number', cardNumberController, true, inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
+            const SizedBox(height: 30),
+            const Text('Card Expiration', style: TextStyle(color: AppColors.textColor)),
+            const SizedBox(height: 5),
             _buildExpirationFields(),
             const SizedBox(height: 30),
             _buildContinueButton(context),
@@ -76,26 +93,55 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   Widget _buildPaymentMethodSelector() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: ['visa', 'mastercard', 'amex'].map((method) {
-        return GestureDetector(
-          onTap: () => setSelectedPaymentMethod(method),
-          child: Opacity(
-            opacity: selectedPaymentMethod == method ? 1.0 : 0.5,
-            child: Image.asset('images/$method.png', height: 40),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.buttonColor,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5,
+            offset: Offset(0, 10),
           ),
-        );
-      }).toList(),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'Payment Method',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
+          ),
+          const SizedBox(width: 54),
+          Row(
+            children: ['visa', 'mastercard', 'amex'].map((method) {
+              return GestureDetector(
+                onTap: () => setSelectedPaymentMethod(method),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.50),
+                  child: Opacity(
+                    opacity: selectedPaymentMethod == method ? 1.0 : 0.5,
+                    child: Image.asset(
+                      'lib/images/$method.png',
+                      height: 35,
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildPaymentField(String label, TextEditingController controller, bool isNumeric) {
+  Widget _buildPaymentField(String label, TextEditingController controller, bool isNumeric, {List<TextInputFormatter>? inputFormatters}) {
     return TextField(
       controller: controller,
       keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
-        labelText: label,
         labelStyle: const TextStyle(color: AppColors.textColor),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: AppColors.textColor),
@@ -140,17 +186,31 @@ class _PaymentPageState extends State<PaymentPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BillingAddressScreen()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => BillingAddressScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
           );
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.buttonColor,
-          minimumSize: const Size(double.infinity, 50),
+          foregroundColor: AppColors.secondaryColor, backgroundColor: AppColors.buttonColor,
+          minimumSize: const Size(double.infinity, 55),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: const Text('Continue', style: TextStyle(fontSize: 18)),
+        child: const Text(
+          'Continue',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
       ),
     );
   }
@@ -173,16 +233,37 @@ class _ExpirationDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: AppColors.textColor),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: AppColors.secondaryColor),
+        ),
       ),
+      dropdownColor: AppColors.buttonColor,
       value: value,
       items: items
-          .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+          .map((item) => DropdownMenuItem(
+                value: item,
+                // Warna teks dalam dropdown list (saat dibuka)
+                child: Text(
+                  item, 
+                  style: TextStyle(
+                    color: value == item ? AppColors.textColor : AppColors.primaryColor
+                  ),
+                ),
+              ))
           .toList(),
       onChanged: onChanged,
       hint: Text(hint, style: const TextStyle(color: AppColors.textColor)),
+      // Warna teks saat item sudah dipilih
+      style: const TextStyle(color: AppColors.textColor),
+      iconEnabledColor: AppColors.textColor,
+      iconDisabledColor: AppColors.textColor,
     );
   }
 }
+
