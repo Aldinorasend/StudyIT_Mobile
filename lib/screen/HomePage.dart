@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:studyit/package/NavbarBottom.dart';
 import 'package:studyit/screen/EditProfile.dart';
 import 'package:studyit/screen/coursePage.dart';
+import 'package:studyit/screen/payment_page.dart';
 
 class AppColors {
   static const Color primaryColor = Color(0xFF113F67);
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const HomePageBody(), // Page content for the home
     const CourseScreen(), // Dummy page for search
-    const EditProfileScreen(), // Dummy page for profile
+    const EditProfile(), // Dummy page for profile
   ];
 
   void _onTabTapped(int index) {
@@ -106,7 +107,13 @@ class HomePageBody extends StatelessWidget {
                             height: 40,
                             padding: const EdgeInsets.all(3),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaymentPage()),
+                                );
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
                               ),
