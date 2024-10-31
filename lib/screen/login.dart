@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:studyit/screen/HomePage.dart';
+import 'package:studyit/screen/OtpPage.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -32,6 +34,10 @@ class LoginScreen extends StatelessWidget {
     // Contoh validasi sederhana: email dan password harus sesuai
     if (email == "user@example.com" && password == "password123") {
       _showDialog(context, "Login berhasil");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     } else {
       _showDialog(context, "Login gagal");
     }
@@ -129,6 +135,10 @@ class LoginScreen extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     // Add Forgot Password action
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => OtpPage()),
+                    );
                   },
                   child: const Text(
                     'Forgot Password?',

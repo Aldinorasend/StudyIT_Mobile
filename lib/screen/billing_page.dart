@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:studyit/screen/HomePage.dart';
 import 'package:studyit/screen/notification.dart';
 import 'package:studyit/package/NavbarBottom.dart';
 
@@ -116,13 +117,18 @@ class BillingAddressScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   NotificationService.showNotification(
-                  context,
-                  title: 'Payment',
-                  message: 'Payment telah berhasil dibayarkan',
-                  imagePath: 'lib/images/payment.png', // gambar dapat diganti sesuai kebutuhan
-                  duration: const Duration(seconds: 5),
-                );
-              },
+                    context,
+                    title: 'Payment',
+                    message: 'Payment telah berhasil dibayarkan',
+                    imagePath:
+                        'lib/images/payment.png', // gambar dapat diganti sesuai kebutuhan
+                    duration: const Duration(seconds: 5),
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: AppColors.primaryColor,
                   backgroundColor: AppColors.buttonColor,
@@ -140,11 +146,11 @@ class BillingAddressScreen extends StatelessWidget {
                 ),
               ),
             ),
-                      ],
-                    ),
-                  ),
-                );
-              }
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildLabelAndTextField({
     required String label,
@@ -169,11 +175,13 @@ class BillingAddressScreen extends StatelessWidget {
             filled: true,
             fillColor: const Color(0xFF033D68),
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColors.textColor, width: 1.5),
+              borderSide:
+                  const BorderSide(color: AppColors.textColor, width: 1.5),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColors.textColor, width: 2),
+              borderSide:
+                  const BorderSide(color: AppColors.textColor, width: 2),
               borderRadius: BorderRadius.circular(10),
             ),
           ),
