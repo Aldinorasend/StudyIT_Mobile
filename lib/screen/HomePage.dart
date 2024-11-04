@@ -1,6 +1,7 @@
 // ignore: file_names
 // Use flutter_asset_manifest.AssetManifest or google_fonts_asset_manifest.AssetManifest
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:studyit/package/NavbarBottom.dart';
 import 'package:studyit/screen/EditProfile.dart';
@@ -68,18 +69,39 @@ class HomePageBody extends StatelessWidget {
                 children: <Widget>[
                   // CONTAINER CTA
                   Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        height: MediaQuery.of(context).size.height *
+                            0.6, // Match height with the container
+                        autoPlay: true,
+                        enableInfiniteScroll: true,
+                        viewportFraction: 1.0,
+                      ),
+                      items: [
+                        Image.network(
+                            "https://images.unsplash.com/photo-1511376777868-611b54f68947?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            fit: BoxFit.cover),
+                        Image.network(
+                            "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            fit: BoxFit.cover),
+                        Image.network(
+                            "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            fit: BoxFit.cover),
+                      ],
+                    ),
+                  ),
+                  // Overlay Container for Text and Button
+                  Container(
                     height: MediaQuery.of(context).size.height * 0.6,
                     width: MediaQuery.of(context).size.width * 1,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("lib/images/background.png"),
-                        fit: BoxFit.cover,
-                      ),
-                      color: AppColors.buttonColor,
+                    decoration: BoxDecoration(
+                      color: AppColors.buttonColor.withOpacity(
+                          0), // Optional: Add some opacity to background
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          top: 150, right: 20, left: 20, bottom: 20),
+                          top: 120, right: 30, left: 30, bottom: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -90,7 +112,7 @@ class HomePageBody extends StatelessWidget {
                                 color: AppColors.textColor,
                                 fontFamily: 'Poppins',
                                 fontSize: 24,
-                                fontWeight: FontWeight.w600),
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
                           const Text(
@@ -101,12 +123,11 @@ class HomePageBody extends StatelessWidget {
                                 color: AppColors.textColor,
                                 fontWeight: FontWeight.w400),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
                           Container(
-                            width: 160,
-                            height: 40,
-                            padding: const EdgeInsets.all(3),
-                            child: ElevatedButton(
+                            width: 130,
+                            height: 30,
+                            child: TextButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -114,13 +135,21 @@ class HomePageBody extends StatelessWidget {
                                       builder: (context) => PaymentPage()),
                                 );
                               },
-                              style: ElevatedButton.styleFrom(
+                              style: TextButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    side: BorderSide(
+                                        color: AppColors.textColor, width: 1)),
                               ),
                               child: const Text(
                                 "Upgrade Your Package",
                                 style: TextStyle(
-                                    fontSize: 11, fontFamily: 'Inter'),
+                                    fontSize: 10,
+                                    fontFamily: 'Inter',
+                                    color: AppColors.textColor,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
@@ -336,17 +365,17 @@ class HomePageBody extends StatelessWidget {
                                     ),
                                     // Lock Icon and Text
                                     const Positioned(
-                                      top: 55,
-                                      left: 75,
+                                      top: 40,
+                                      left: 65,
                                       child: Icon(
                                         Icons.lock,
                                         color: Colors.white,
-                                        size: 10,
+                                        size: 25,
                                       ),
                                     ),
                                     const Positioned(
                                       bottom: 55,
-                                      left: 15,
+                                      left: 10,
                                       child: Text(
                                         "Unlock With Subscription",
                                         style: TextStyle(
@@ -427,17 +456,17 @@ class HomePageBody extends StatelessWidget {
                                     ),
                                     // Lock Icon and Text
                                     const Positioned(
-                                      top: 55,
-                                      left: 75,
+                                      top: 40,
+                                      left: 65,
                                       child: Icon(
                                         Icons.lock,
                                         color: Colors.white,
-                                        size: 10,
+                                        size: 25,
                                       ),
                                     ),
                                     const Positioned(
                                       bottom: 55,
-                                      left: 15,
+                                      left: 10,
                                       child: Text(
                                         "Unlock With Subscription",
                                         style: TextStyle(
@@ -517,17 +546,17 @@ class HomePageBody extends StatelessWidget {
                                     ),
                                     // Lock Icon and Text
                                     const Positioned(
-                                      top: 55,
-                                      left: 75,
+                                      top: 40,
+                                      left: 65,
                                       child: Icon(
                                         Icons.lock,
                                         color: Colors.white,
-                                        size: 10,
+                                        size: 25,
                                       ),
                                     ),
                                     const Positioned(
                                       bottom: 55,
-                                      left: 15,
+                                      left: 10,
                                       child: Text(
                                         "Unlock With Subscription",
                                         style: TextStyle(
@@ -607,17 +636,17 @@ class HomePageBody extends StatelessWidget {
                                     ),
                                     // Lock Icon and Text
                                     const Positioned(
-                                      top: 55,
-                                      left: 75,
+                                      top: 40,
+                                      left: 65,
                                       child: Icon(
                                         Icons.lock,
                                         color: Colors.white,
-                                        size: 10,
+                                        size: 25,
                                       ),
                                     ),
                                     const Positioned(
                                       bottom: 55,
-                                      left: 15,
+                                      left: 10,
                                       child: Text(
                                         "Unlock With Subscription",
                                         style: TextStyle(
