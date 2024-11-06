@@ -19,14 +19,16 @@ class BillingPage extends StatefulWidget {
 }
 
 class _BillingPageState extends State<BillingPage> {
-  int _currentIndex = 0; // To handle the current index of the navbar
+  int _currentIndex = 0; // Menyimpan indeks halaman yang aktif
 
+  // Daftar halaman yang ditampilkan sesuai dengan indeks pada bottom navigation
   final List<Widget> _pages = [
-    BillingAddressScreen(), // Page content for the home
-    const Center(child: Text("Search Page")), // Dummy page for search
-    const Center(child: Text("Profile Page")), // Dummy page for profile
+    BillingAddressScreen(),
+    const Center(child: Text("Search Page")),
+    const Center(child: Text("Profile Page")),
   ];
 
+  // Fungsi untuk mengubah halaman aktif berdasarkan tab yang ditekan
   void _onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -36,22 +38,45 @@ class _BillingPageState extends State<BillingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: _pages[_currentIndex], // Menampilkan halaman sesuai indeks
       bottomNavigationBar: CustomNavbar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
+        currentIndex: _currentIndex, // Indeks halaman aktif
+        onTap: _onTabTapped, // Callback saat tab ditekan
       ),
     );
   }
 }
+class BillingAddressScreen extends StatefulWidget {
+  @override
+  _BillingAddressScreenState createState() => _BillingAddressScreenState();
+}
 
-class BillingAddressScreen extends StatelessWidget {
+class _BillingAddressScreenState extends State<BillingAddressScreen> {
+  // Kontroler teks untuk setiap input alamat
   final TextEditingController countryController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
   final TextEditingController zipCodeController = TextEditingController();
+  bool _isFormValid = false; // simpan status validitas form
 
-  BillingAddressScreen({super.key});
+  @override
+  void initState() {
+    super.initState();
+    // Menambahkan listener untuk memeriksa validitas form saat ada perubahan input
+    countryController.addListener(_checkFormValidity);
+    cityController.addListener(_checkFormValidity);
+    streetController.addListener(_checkFormValidity);
+    zipCodeController.addListener(_checkFormValidity);
+  }
+
+  void _checkFormValidity() {
+    setState(() {
+      _isFormValid = countryController.text.isNotEmpty &&
+          cityController.text.isNotEmpty &&
+          streetController.text.isNotEmpty &&
+          zipCodeController.text.isNotEmpty;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,20 +140,21 @@ class BillingAddressScreen extends StatelessWidget {
             const SizedBox(height: 45),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  NotificationService.showNotification(
-                    context,
-                    title: 'Payment',
-                    message: 'Payment telah berhasil dibayarkan',
-                    imagePath:
-                        'lib/images/payment.png', // gambar dapat diganti sesuai kebutuhan
-                    duration: const Duration(seconds: 5),
-                  );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
-                },
+                onPressed: _isFormValid // Aktif jika form valid
+                    ? () {
+                        NotificationService.showNotification(
+                          context,
+                          title: 'Payment',
+                          message: 'Payment telah berhasil dibayarkan',
+                          imagePath: 'lib/images/payment.png',
+                          duration: const Duration(seconds: 5),
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
+                      }
+                    : null,
                 style: ElevatedButton.styleFrom(
                   foregroundColor: AppColors.primaryColor,
                   backgroundColor: AppColors.buttonColor,
@@ -152,11 +178,12 @@ class BillingAddressScreen extends StatelessWidget {
     );
   }
 
+  // Widget helper untuk membangun label dan input teks
   Widget _buildLabelAndTextField({
-    required String label,
-    required TextEditingController controller,
-    required TextInputType inputType,
-    List<TextInputFormatter>? inputFormatter,
+    required String label, // Label input
+    required TextEditingController controller, // Kontroler teks
+    required TextInputType inputType, // Tipe input
+    List<TextInputFormatter>? inputFormatter, // Formatter input
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
