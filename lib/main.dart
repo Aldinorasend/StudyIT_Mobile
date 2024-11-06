@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.lato().fontFamily,
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'StudyIT'),
+      home: LoginScreen(),
     );
   }
 }

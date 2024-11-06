@@ -1,51 +1,61 @@
-import 'package:flutter/material.dart';
+  import 'package:file_picker/file_picker.dart';
+  import 'package:flutter/material.dart';
+  import 'package:open_file/open_file.dart';
+  import 'HomePage.dart';
 
-class Coursesubmit extends StatefulWidget {
-  const Coursesubmit({super.key});
+  class Coursesubmit extends StatefulWidget {
+    const Coursesubmit({super.key});
 
-  @override
-  State<Coursesubmit> createState() => _CoursesubmitState();
-}
+    @override
+    State<Coursesubmit> createState() => _CoursesubmitState();
+  }
 
-class _CoursesubmitState extends State<Coursesubmit> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
+  class _CoursesubmitState extends State<Coursesubmit> {
+    PlatformFile? pickedFile; // Store selected file details
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+            // Menampilkan SnackBar saat tombol kembali ditekan
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text("Warning, your changes will not be saved"),
+                duration: const Duration(seconds: 3),
+              ),
+            );
+            // Kembali ke layar sebelumnya setelah menampilkan SnackBar
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+            });
           },
+          ),
+          title: const Text(
+            "Task 1: Introduction to UI/UX",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: const Color(0xFF113F67),
         ),
-        title: const Text(
-          "Task 1: Introduction to UI/UX",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xFF113F67),
-      ),
-      body: Column(
-        children: [
-          //const SizedBox(height: 5.0),
-          Container(
-            height: 80, 
-            width: double.infinity, 
-            //margin: const EdgeInsets.only(top: 8), 
-            padding: const EdgeInsets.all(16.0), 
-            decoration: BoxDecoration(
-              color: Colors.white, 
-              // borderRadius: BorderRadius.circular(12.0), 
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5), 
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 0), 
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(0),
+        body: Column(
+          children: [
+            Container(
+              height: 80,
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
               child: RichText(
                 text: const TextSpan(
                   children: [
@@ -62,31 +72,29 @@ class _CoursesubmitState extends State<Coursesubmit> {
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
-                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Container(
-            height: 200,
-            width: double.infinity,
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5), 
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 0),
-              )
-            ]),
-            child: const Padding(
-              padding: EdgeInsets.all(0),
-              child: Column(
+            const SizedBox(height: 16),
+            Container(
+              height: 200,
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -97,7 +105,7 @@ class _CoursesubmitState extends State<Coursesubmit> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8), // Spacing after "Task Points:"
+                  SizedBox(height: 8),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -138,35 +146,118 @@ class _CoursesubmitState extends State<Coursesubmit> {
                   ),
                 ],
               ),
-            )
-          ),
-          const SizedBox(height: 110),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigasi ke halaman courseSubmit
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Coursesubmit(),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 48),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  backgroundColor: const Color(0xFF113F67),
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text(
-                  'Add Submission',
-                  style: TextStyle(fontSize: 16),
-                ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              height: 150,
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
               ),
-            )
-        ],
-      ),
-    );
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Selected File:', style: TextStyle(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Display selected file details if a file is picked
+                    if (pickedFile != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () => OpenFile.open(pickedFile!.path), // Open file on tap
+                              child: Text(
+                                '${pickedFile!.name}',
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                            Text("Size: ${(pickedFile!.size / 1024).toStringAsFixed(2)} KB"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+                
+              ),
+            ),
+            const SizedBox(height: 40),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final result = await FilePicker.platform.pickFiles();
+                          if (result != null) {
+                            setState(() {
+                              pickedFile = result.files.first;
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(160, 48),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          backgroundColor: const Color(0xFF113F67),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text(
+                          'Add Submission',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ElevatedButton(
+                        onPressed: pickedFile != null
+                            ? () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => HomePage()),
+                                ); // Ganti '/homepage' dengan nama rute halaman Home kamu
+                              }
+                            : null, // Tombol tidak aktif jika file belum dipilih
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(160, 48),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          backgroundColor: pickedFile != null
+                              ? const Color(0xFF113F67) // Warna aktif jika file sudah dipilih
+                              : const Color.fromARGB(255, 159, 164, 168), // Warna default jika belum ada file
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
   }
-}
