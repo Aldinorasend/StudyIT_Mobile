@@ -31,26 +31,42 @@ class _VideopageState extends State<Videopage> {
         child: Column(
           children: [
             SamplePlayer(),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: 8),
-                    Text(
-                      'What is UI & UX Design?',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
+
+            Container(
+              height: 80,
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    spreadRadius: 3.5,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 8),
+                      Text(
+                        'What is UI & UX Design?',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 110),
+            const SizedBox(height: 420),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ElevatedButton(
@@ -71,7 +87,7 @@ class _VideopageState extends State<Videopage> {
                 ),
                 child: const Text(
                   'Task',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
             )
