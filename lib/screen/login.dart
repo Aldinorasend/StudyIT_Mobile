@@ -8,38 +8,59 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen({super.key});
 
-  void _showDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(message),
-          actions: [
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _login(BuildContext context) {
     String email = emailController.text;
     String password = passwordController.text;
 
     // Contoh validasi sederhana: email dan password harus sesuai
     if (email == "user@example.com" && password == "password123") {
-      _showDialog(context, "Login berhasil");
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xFF113F67),
+              title: Text(
+                "Login Berhasil",
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    },
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            );
+          });
     } else {
-      _showDialog(context, "Login gagal");
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xFF113F67),
+              title: Text(
+                "Login Gagal",
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            );
+          });
     }
   }
 
