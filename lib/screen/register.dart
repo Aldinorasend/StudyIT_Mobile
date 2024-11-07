@@ -22,7 +22,9 @@ class registerPage extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back),
                   color: const Color(0xFF113F67),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
             ),
