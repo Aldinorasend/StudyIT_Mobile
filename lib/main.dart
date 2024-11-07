@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Timer(const Duration(seconds: 1), () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => EditProfileScreen()),
       );
     });
   }
