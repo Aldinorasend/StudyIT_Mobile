@@ -179,51 +179,6 @@ class LoginScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 20),
-
-              // Continue with Google
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Add Google login action
-                },
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    iconColor: const Color(0xFF113F67),
-                    backgroundColor: const Color(0xFF113F67),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: const BorderSide(color: Colors.white))),
-                icon: Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
-                  height: 24.0,
-                  width: 24.0,
-                ),
-                label: const Text(
-                  'Continue with Google',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Continue with Apple
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Add Apple login action
-                },
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    iconColor: const Color(0xFF113F67),
-                    backgroundColor: const Color(0xFF113F67),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: const BorderSide(color: Colors.white))),
-                icon: const Icon(Icons.apple, color: Colors.white),
-                label: const Text(
-                  'Continue with Apple',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
             ],
           ),
         ),
