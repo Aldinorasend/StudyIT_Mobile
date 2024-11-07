@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studyit/screen/HomePage.dart';
 import 'package:studyit/screen/OtpPage.dart';
+import 'package:studyit/screen/register.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -73,22 +74,7 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Back button
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    color: const Color(0xFF113F67),
-                    onPressed: () {},
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 65),
 
               // Title
               const Text(
@@ -195,7 +181,35 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Dont Have an Account?",
+                    style: TextStyle(
+                      color:
+                          Colors.white, // Color for "Already Have an Account?"
+                    ),
+                  ),
+                  const SizedBox(width: 4), // Space between the two texts
+                  GestureDetector(
+                    onTap: () {
+                      // Navigate to login page or handle login
+                    },
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => registerPage()));
+                        },
+                        child: const Text(
+                          'Create Here',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        )),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
