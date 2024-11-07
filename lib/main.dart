@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:studyit/screen/EditProfile.dart';
+import 'package:studyit/screen/forgotPass.dart';
+import 'package:studyit/screen/login.dart';
+import 'package:studyit/screen/register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Timer(const Duration(seconds: 1), () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const EditProfileScreen()),
+        MaterialPageRoute(builder: (context) => registerPage()),
       );
     });
   }
