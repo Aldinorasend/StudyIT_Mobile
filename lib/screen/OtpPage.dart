@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studyit/screen/login.dart';
 
 class OtpPage extends StatelessWidget {
   const OtpPage({super.key});
@@ -17,7 +18,8 @@ class OtpPage extends StatelessWidget {
           },
         ),
       ),
-      backgroundColor: const Color(0xFF113F67), // Warna latar belakang sesuai gambar
+      backgroundColor:
+          const Color(0xFF113F67), // Warna latar belakang sesuai gambar
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -56,7 +58,7 @@ class OtpPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => OTPVerificationScreen()),
+                        builder: (context) => const OTPVerificationScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -130,7 +132,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
           },
         ),
       ),
-      backgroundColor: const Color(0xFF113F67), // Warna latar belakang sesuai gambar
+      backgroundColor:
+          const Color(0xFF113F67), // Warna latar belakang sesuai gambar
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -169,6 +172,10 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   // Aksi ketika tombol OTP ditekan
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -221,7 +228,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
           }
         },
         onTap: () {
-          _controllers[index].selection = const TextSelection.collapsed(offset: 0);
+          _controllers[index].selection =
+              const TextSelection.collapsed(offset: 0);
         },
       ),
     );

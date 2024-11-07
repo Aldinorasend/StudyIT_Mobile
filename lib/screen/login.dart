@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:studyit/screen/HomePage.dart';
+import 'package:studyit/screen/OtpPage.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -17,6 +19,10 @@ class LoginScreen extends StatelessWidget {
               child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
               },
             ),
           ],
@@ -129,6 +135,10 @@ class LoginScreen extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     // Add Forgot Password action
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => OtpPage()),
+                    );
                   },
                   child: const Text(
                     'Forgot Password?',

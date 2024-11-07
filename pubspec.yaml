@@ -38,6 +38,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_local_notifications: ^17.2.4
+  flick_video_player: ^0.9.0
+  video_player: ^2.2.0
+  carousel_slider: ^5.0.0
+  file_picker: ^8.1.3
+  open_file: ^3.5.9
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +71,14 @@ flutter:
     - lib/images/visa.png
     - lib/images/mastercard.png
     - lib/images/amex.png
+    - lib/images/payment.png
+    - lib/images/glenn-carstens-peters-P1qyEf1g0HU-unsplash.jpg
+    - lib/images/85f69649-5387-44c2-ba45-81ae13812e36-cover.png
+    - lib/images/adobe.png
+    - lib/images/adobe1.jpg
+    - lib/images/placenat.mp4
+    - lib/images/Modul.png
+    - lib/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
