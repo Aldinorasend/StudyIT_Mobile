@@ -3,6 +3,8 @@ import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
 
 class SamplePlayer extends StatefulWidget {
+  const SamplePlayer({super.key});
+
   @override
   _SamplePlayerState createState() => _SamplePlayerState();
 }
@@ -45,7 +47,7 @@ class _SamplePlayerState extends State<SamplePlayer> {
         FlickVideoPlayer(flickManager: flickManager),
         if (!isPlaying)
           IconButton(
-            icon: Icon(Icons.play_arrow, color: Colors.white, size: 50),
+            icon: const Icon(Icons.play_arrow, color: Colors.white, size: 50),
             onPressed: _togglePlayPause,
           ),
       ],

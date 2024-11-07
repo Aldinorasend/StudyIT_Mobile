@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
                 Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
@@ -137,7 +137,7 @@ class LoginScreen extends StatelessWidget {
                     // Add Forgot Password action
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => OtpPage()),
+                      MaterialPageRoute(builder: (context) => const OtpPage()),
                     );
                   },
                   child: const Text(

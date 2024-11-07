@@ -22,9 +22,9 @@
             onPressed: () {
             // Menampilkan SnackBar saat tombol kembali ditekan
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text("Warning, your changes will not be saved"),
-                duration: const Duration(seconds: 3),
+              const SnackBar(
+                content: Text("Warning, your changes will not be saved"),
+                duration: Duration(seconds: 3),
               ),
             );
             // Kembali ke layar sebelumnya setelah menampilkan SnackBar
@@ -166,8 +166,8 @@
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Selected File:', style: TextStyle(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8,),
+                  const Text('Selected File:', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8,),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -181,7 +181,7 @@
                             GestureDetector(
                               onTap: () => OpenFile.open(pickedFile!.path), // Open file on tap
                               child: Text(
-                                '${pickedFile!.name}',
+                                pickedFile!.name,
                                 style: const TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,
@@ -234,7 +234,7 @@
                             ? () {
                                 Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(builder: (context) => HomePage()),
+                                  MaterialPageRoute(builder: (context) => const HomePage()),
                                 ); // Ganti '/homepage' dengan nama rute halaman Home kamu
                               }
                             : null, // Tombol tidak aktif jika file belum dipilih

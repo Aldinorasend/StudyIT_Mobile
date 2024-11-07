@@ -68,7 +68,7 @@ class HomePageBody extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   // CONTAINER CTA
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: CarouselSlider(
                       options: CarouselOptions(
@@ -124,7 +124,7 @@ class HomePageBody extends StatelessWidget {
                                 fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(height: 10),
-                          Container(
+                          SizedBox(
                             width: 130,
                             height: 30,
                             child: TextButton(
@@ -132,12 +132,12 @@ class HomePageBody extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PaymentPage()),
+                                      builder: (context) => const PaymentPage()),
                                 );
                               },
                               style: TextButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
                                     side: BorderSide(
