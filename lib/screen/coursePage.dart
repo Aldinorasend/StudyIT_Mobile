@@ -1,3 +1,4 @@
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:studyit/screen/videoPage.dart';
 
@@ -16,13 +17,9 @@ class _CourseScreenState extends State<CourseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        toolbarHeight: 2,
-        elevation: 0,
-        backgroundColor: const Color(0xFF113F67),
-      ),
-      body: SingleChildScrollView(
+      
+      body: ColorfulSafeArea(
+        color: const Color(0xFF113F67).withOpacity(1),
         child: Column(
           children: [
             Stack(
