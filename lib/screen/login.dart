@@ -175,20 +175,6 @@ class LoginScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 20),
-
-              // Divider OR
-              const Row(
-                children: [
-                  Expanded(child: Divider(color: Colors.white)),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Text('OR', style: TextStyle(color: Colors.white)),
-                  ),
-                  Expanded(child: Divider(color: Colors.white)),
-                ],
-              ),
-
-              const SizedBox(height: 20),
             ],
           ),
         ),

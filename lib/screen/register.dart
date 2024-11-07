@@ -54,6 +54,8 @@ class registerPage extends StatelessWidget {
               style: const TextStyle(color: Colors.white),
             ),
 
+            const SizedBox(height: 20),
+
 // Password Label and TextField
             const Text(
               "Password",
@@ -61,6 +63,7 @@ class registerPage extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             TextField(
+              obscureText: true,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -73,7 +76,27 @@ class registerPage extends StatelessWidget {
               ),
               style: const TextStyle(color: Colors.white),
             ),
+            const SizedBox(height: 20),
 
+            const Text(
+              "Confirm Password",
+              style: TextStyle(fontSize: 15, color: Colors.white),
+            ),
+            const SizedBox(height: 5),
+            TextField(
+              obscureText: true,
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.white, width: 1),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.5),
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+            ),
             const SizedBox(height: 40),
 
             ElevatedButton(

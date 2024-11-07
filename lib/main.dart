@@ -2,9 +2,12 @@ import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:studyit/screen/EditProfile.dart';
+import 'package:studyit/screen/forgotPass.dart';
+import 'package:studyit/screen/register.dart';
 import 'package:studyit/screen/HomePage.dart';
 import 'package:studyit/screen/login.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 
 void main() {
   runApp(const MyApp());
