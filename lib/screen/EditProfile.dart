@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 void main() {
   runApp(const MyApp());
@@ -43,6 +45,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController addressController =
       TextEditingController(text: 'Jalan palem hijau');
 
+  File? _profileImage;
+  final ImagePicker _picker = ImagePicker();
+
   // Dispose controllers when the widget is removed from the widget tree
   @override
   void dispose() {
@@ -50,11 +55,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     emailController.dispose();
     phoneController.dispose();
     addressController.dispose();
-    super.dispose(); // Call the super method after disposing controllers
+    super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path);
+      });
+    }
   }
 
   void _saveChanges() {
-    // Show a snackbar when changes are saved
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Changes saved successfully!'),
@@ -73,7 +86,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
+            Navigator.pop(context);
           },
         ),
       ),
@@ -84,10 +97,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Center(
               child: Stack(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(
-                        'https://via.placeholder.com/150'), // Replace with actual profile image URL
+                    backgroundImage: _profileImage != null
+                        ? FileImage(_profileImage!) as ImageProvider
+                        : const NetworkImage(
+                            'https://via.placeholder.com/150'),
                   ),
                   Positioned(
                     bottom: 0,
@@ -101,9 +116,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           color: Colors.white,
                           size: 16,
                         ),
-                        onPressed: () {
-                          // Action to change profile picture
-                        },
+                        onPressed: _pickImage,
                       ),
                     ),
                   ),

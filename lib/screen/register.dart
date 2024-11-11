@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 
 class registerPage extends StatelessWidget {
   const registerPage({super.key});
@@ -6,7 +7,8 @@ class registerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: ColorfulSafeArea(
+        color: Color(0xFF113F67),
           child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

@@ -1,3 +1,4 @@
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:studyit/screen/HomePage.dart';
 import 'package:studyit/screen/OtpPage.dart';
@@ -68,7 +69,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: ColorfulSafeArea(
+        color: const Color(0xFF113F67),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
