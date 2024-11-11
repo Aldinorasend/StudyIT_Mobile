@@ -239,7 +239,15 @@ class HomePageBody extends StatelessWidget {
                       runSpacing: 10,
                       children: [
                         // Card 1
-                        Container(
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                                    context,
+        MaterialPageRoute(builder: (context) => CourseScreen()),
+                            );
+
+                          },
+                          child: Container(
                           width: 160,
                           height: 143,
                           decoration: const BoxDecoration(
@@ -275,6 +283,8 @@ class HomePageBody extends StatelessWidget {
                             ],
                           ),
                         ),
+                        ),
+                        
                         // Card 2
                         Container(
                           width: 160,

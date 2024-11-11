@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studyit/screen/login.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OtpPage extends StatelessWidget {
   const OtpPage({super.key});
@@ -14,6 +15,7 @@ class OtpPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
+            Navigator.pop(context);
             // Aksi saat tombol kembali ditekan
           },
         ),
@@ -140,13 +142,16 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 50), // Memberikan jarak dari atas
-            const Text(
+            Text(
               'OTP Verification',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              style: GoogleFonts.lato(
+                textStyle: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
+
             ),
             const SizedBox(height: 10),
             const Text(

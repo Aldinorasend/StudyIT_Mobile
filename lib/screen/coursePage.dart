@@ -25,10 +25,16 @@ class _CourseScreenState extends State<CourseScreen> {
               Stack(
                 children: [
                   Image.asset('lib/images/glenn-carstens-peters-P1qyEf1g0HU-unsplash.jpg'),
-                  const Positioned(
+                  Positioned(
                     top: 16,
                     left: 16,
-                    child: Icon(Icons.arrow_back, color: Colors.white),
+                    child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
+        ),  
+                    
                   ),
                   const Positioned(
                     bottom: 16,
