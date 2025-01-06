@@ -43,8 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (response.statusCode == 200) {
           final Map<String, dynamic> responseData = jsonDecode(response.body);
-          final String userId = responseData['id'];
-
+          final String userId = responseData['id'].toString();
           // Simpan status login ke Shared Preferences
           final prefs = await SharedPreferences.getInstance();
           await prefs.setBool('isLoggedIn', true);
