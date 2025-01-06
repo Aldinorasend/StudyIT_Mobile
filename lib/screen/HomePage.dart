@@ -16,7 +16,9 @@ class AppColors {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String userId; // Tambahkan userId sebagai parameter
+
+  const HomePage({Key? key, required this.userId}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -25,11 +27,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0; // To handle the current index of the navbar
 
-  final List<Widget> _pages = [
-    const HomePageBody(), // Page content for the home
-    const CourseScreen(), // Dummy page for search
-    const EditProfileScreen(), // Dummy page for profile
-  ];
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      HomePageBody(userId: widget.userId), // Teruskan userId ke HomePageBody
+      CourseScreen(userId: widget.userId), // Teruskan userId ke CourseScreen
+      // EditProfileScreen(
+      //     userId: widget.userId), // Teruskan userId ke EditProfileScreen
+    ];
+  }
 
   void _onTabTapped(int index) {
     setState(() {
@@ -50,7 +59,8 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageBody extends StatelessWidget {
-  const HomePageBody({super.key});
+  final String userId;
+  const HomePageBody({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +78,7 @@ class HomePageBody extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   // CONTAINER CTA
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: CarouselSlider(
                       options: CarouselOptions(
@@ -124,7 +134,7 @@ class HomePageBody extends StatelessWidget {
                                 fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(height: 10),
-                          Container(
+                          SizedBox(
                             width: 130,
                             height: 30,
                             child: TextButton(
@@ -132,12 +142,13 @@ class HomePageBody extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PaymentPage()),
+                                      builder: (context) =>
+                                          const PaymentPage()),
                                 );
                               },
                               style: TextButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
                                     side: BorderSide(
@@ -240,51 +251,54 @@ class HomePageBody extends StatelessWidget {
                       children: [
                         // Card 1
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
-                                    context,
-        MaterialPageRoute(builder: (context) => CourseScreen()),
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CourseScreen(userId: userId)),
                             );
-
                           },
                           child: Container(
-                          width: 160,
-                          height: 143,
-                          decoration: const BoxDecoration(
-                              color: AppColors.secondaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Image
-                              Container(
-                                width: 191,
-                                height: 97.36,
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage("lib/images/uiux.jpg"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    color: AppColors.buttonColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                              ),
-                              // Title
-                              const Padding(
-                                padding: EdgeInsets.only(top: 8.0, left: 5.0),
-                                child: Text(
-                                  "UI-UX Beginner Class",
-                                  style: TextStyle(
-                                      fontSize: 13, color: AppColors.textColor),
+                            width: 160,
+                            height: 143,
+                            decoration: const BoxDecoration(
+                                color: AppColors.secondaryColor,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Image
+                                Container(
+                                  width: 191,
+                                  height: 97.36,
+                                  decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image:
+                                            AssetImage("lib/images/uiux.jpg"),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      color: AppColors.buttonColor,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
                                 ),
-                              )
-                            ],
+                                // Title
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 8.0, left: 5.0),
+                                  child: Text(
+                                    "UI-UX Beginner Class",
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: AppColors.textColor),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                        ),
-                        
+
                         // Card 2
                         Container(
                           width: 160,

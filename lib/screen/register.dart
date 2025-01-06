@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:studyit/screen/login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -10,7 +12,11 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _numberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -58,7 +64,26 @@ class _RegisterPageState extends State<RegisterPage> {
     return null;
   }
 
-  void _onSubmit() {
+  String? _validatePhone(String value) {
+    if (value.isEmpty) {
+      return 'Phone number is required.';
+    }
+    if (!RegExp(r'^\d+$').hasMatch(value)) {
+      return 'Phone number must contain only digits.';
+    }
+    return null;
+  }
+
+  String? _validateUsername(String value) {
+    if (value.isEmpty) {
+      return 'Username is required.';
+    }
+    return null;
+  }
+
+  void _onSubmit() async {
+    print("Username: ${_usernameController.text}");
+    print("Password: ${_passwordController.text}");
     if (_formKey.currentState!.validate()) {
       final password = _passwordController.text;
       if (password != _confirmPasswordController.text) {
@@ -68,12 +93,52 @@ class _RegisterPageState extends State<RegisterPage> {
         return;
       }
 
-      // Perform registration action
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registration successful!')),
-      );
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      setState(() {
+        _passwordError = null;
+      });
+
+      // Data untuk registrasi
+      final Map<String, dynamic> data = {
+        "username": _usernameController.text,
+        "firstname": _nameController.text,
+        "lastname": _lastNameController.text,
+        "email": _emailController.text,
+        "phonenumber": _numberController.text,
+        "password": _passwordController.text,
+      };
+
+      try {
+        // Kirim data ke API
+        const String BASE_URL =
+            "http://192.168.100.10:3000"; // Ganti dengan URL backend Anda
+        final response = await http.post(
+          Uri.parse('$BASE_URL/api/Accounts'),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(data),
+        );
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Registration successful!')),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        } else {
+          final errorMessage =
+              jsonDecode(response.body)['error'] ?? 'Registration failed';
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: $errorMessage')),
+          );
+          print('Response status: ${response.statusCode}');
+          print('Response body: ${response.body}');
+        }
+      } catch (e) {
+        print("catch $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
     }
   }
 
@@ -113,6 +178,136 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontSize: 32, fontFamily: "Inter", color: Colors.white),
                   ),
                   const SizedBox(height: 40),
+                  const Text(
+                    "Username",
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      errorStyle: const TextStyle(color: Colors.red),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.white, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.white, width: 1.5),
+                      ),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    validator: (value) => _validateUsername(value ?? ''),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "First Name",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            ),
+                            const SizedBox(height: 5),
+                            TextFormField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                hintStyle:
+                                    const TextStyle(color: Colors.white70),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Colors.white, width: 1),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Colors.white, width: 1.5),
+                                ),
+                              ),
+                              style: const TextStyle(color: Colors.white),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'First name is required.';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                          width: 16), // Spasi antara First Name dan Last Name
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Last Name",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            ),
+                            const SizedBox(height: 5),
+                            TextFormField(
+                              controller: _lastNameController,
+                              decoration: InputDecoration(
+                                hintStyle:
+                                    const TextStyle(color: Colors.white70),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Colors.white, width: 1),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Colors.white, width: 1.5),
+                                ),
+                              ),
+                              style: const TextStyle(color: Colors.white),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Last name is required.';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Phone Number",
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                  const SizedBox(height: 5),
+                  TextFormField(
+                    controller: _numberController,
+                    decoration: InputDecoration(
+                      errorStyle: const TextStyle(color: Colors.red),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.white, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.white, width: 1.5),
+                      ),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    validator: (value) => _validatePhone(value ?? ''),
+                  ),
+                  const SizedBox(height: 20),
                   const Text(
                     "Email",
                     style: TextStyle(fontSize: 15, color: Colors.white),
@@ -243,7 +438,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
+                                  builder: (context) => const LoginScreen()));
                         },
                         child: const Text(
                           'Login',

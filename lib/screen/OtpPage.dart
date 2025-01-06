@@ -145,13 +145,12 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
             Text(
               'OTP Verification',
               style: GoogleFonts.lato(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
-
             ),
             const SizedBox(height: 10),
             const Text(
@@ -179,7 +178,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   // Aksi ketika tombol OTP ditekan
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
