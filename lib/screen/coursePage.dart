@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:studyit/screen/videoPage.dart';
 
 class CourseScreen extends StatefulWidget {
-  const CourseScreen({super.key});
+  final String userId;
+
+  const CourseScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
   _CourseScreenState createState() => _CourseScreenState();
@@ -24,17 +26,18 @@ class _CourseScreenState extends State<CourseScreen> {
             children: [
               Stack(
                 children: [
-                  Image.asset('lib/images/glenn-carstens-peters-P1qyEf1g0HU-unsplash.jpg'),
+                  Image.asset(
+                      'lib/images/glenn-carstens-peters-P1qyEf1g0HU-unsplash.jpg'),
                   Positioned(
                     top: 16,
                     left: 16,
                     child: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
-          },
-        ),  
-                    
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () {
+                        Navigator.pop(
+                            context); // Go back to the previous screen
+                      },
+                    ),
                   ),
                   const Positioned(
                     bottom: 16,
@@ -79,7 +82,8 @@ class _CourseScreenState extends State<CourseScreen> {
                   ),
                 ),
                 child: ExpansionTile(
-                  title: const Text('What you’ll learn', style: TextStyle(fontWeight: FontWeight.bold)),
+                  title: const Text('What you’ll learn',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   initiallyExpanded: _learnExpanded,
                   onExpansionChanged: (bool expanded) {
                     setState(() {
@@ -102,10 +106,12 @@ class _CourseScreenState extends State<CourseScreen> {
               ),
               Container(
                 decoration: const BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey, width: 1)),
+                  border:
+                      Border(bottom: BorderSide(color: Colors.grey, width: 1)),
                 ),
                 child: ExpansionTile(
-                  title: const Text('Tools', style: TextStyle(fontWeight: FontWeight.bold)),
+                  title: const Text('Tools',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   initiallyExpanded: _toolsExpanded,
                   onExpansionChanged: (bool expanded) {
                     setState(() {
@@ -165,7 +171,8 @@ class _CourseScreenState extends State<CourseScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                     backgroundColor: const Color(0xFF113F67),
                     foregroundColor: Colors.white,
                   ),

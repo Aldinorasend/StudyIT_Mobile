@@ -3,6 +3,8 @@ import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
 
 class SamplePlayer extends StatefulWidget {
+  const SamplePlayer({super.key});
+
   @override
   _SamplePlayerState createState() => _SamplePlayerState();
 }
@@ -15,7 +17,8 @@ class _SamplePlayerState extends State<SamplePlayer> {
   void initState() {
     super.initState();
     flickManager = FlickManager(
-      videoPlayerController: VideoPlayerController.asset("lib/images/placenat.mp4"),
+      videoPlayerController:
+          VideoPlayerController.asset("lib/images/placenat.mp4"),
       autoPlay: false, // Disable auto-play
     );
   }
@@ -45,7 +48,7 @@ class _SamplePlayerState extends State<SamplePlayer> {
         FlickVideoPlayer(flickManager: flickManager),
         if (!isPlaying)
           IconButton(
-            icon: Icon(Icons.play_arrow, color: Colors.white, size: 50),
+            icon: const Icon(Icons.play_arrow, color: Colors.white, size: 50),
             onPressed: _togglePlayPause,
           ),
       ],

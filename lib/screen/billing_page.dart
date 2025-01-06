@@ -46,7 +46,10 @@ class _BillingPageState extends State<BillingPage> {
     );
   }
 }
+
 class BillingAddressScreen extends StatefulWidget {
+  const BillingAddressScreen({super.key});
+
   @override
   _BillingAddressScreenState createState() => _BillingAddressScreenState();
 }
@@ -151,7 +154,8 @@ class _BillingAddressScreenState extends State<BillingAddressScreen> {
                         );
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
                         );
                       }
                     : null,
