@@ -152,11 +152,11 @@ class _BillingAddressScreenState extends State<BillingAddressScreen> {
                           imagePath: 'lib/images/payment.png',
                           duration: const Duration(seconds: 5),
                         );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const HomePage()),
+                        // );
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
