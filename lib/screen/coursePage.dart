@@ -4,8 +4,13 @@ import 'package:studyit/screen/videoPage.dart';
 
 class CourseScreen extends StatefulWidget {
   final String userId;
+  final String courseId;
 
-  const CourseScreen({Key? key, required this.userId}) : super(key: key);
+  const CourseScreen({
+    Key? key,
+    required this.userId,
+    required this.courseId,
+  }) : super(key: key);
 
   @override
   _CourseScreenState createState() => _CourseScreenState();

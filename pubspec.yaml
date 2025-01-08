@@ -83,6 +83,7 @@ flutter:
     - lib/images/placenat.mp4
     - lib/images/Modul.png
     - lib/images/
+    - lib/backend-uploads/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

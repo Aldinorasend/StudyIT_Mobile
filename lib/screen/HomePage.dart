@@ -2,10 +2,13 @@
 // Use flutter_asset_manifest.AssetManifest or google_fonts_asset_manifest.AssetManifest
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:studyit/package/NavbarBottom.dart';
 import 'package:studyit/screen/EditProfile.dart';
 import 'package:studyit/screen/coursePage.dart';
+import 'package:studyit/screen/login.dart';
 import 'package:studyit/screen/payment_page.dart';
 
 class AppColors {
@@ -16,8 +19,9 @@ class AppColors {
 }
 
 class HomePage extends StatefulWidget {
-  final String userId; // Tambahkan userId sebagai parameter
+  final String userId;
 
+  // Tambahkan userId sebagai parameter
   const HomePage({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -26,18 +30,89 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0; // To handle the current index of the navbar
-
   late final List<Widget> _pages;
-
+  List<Course> courses = [];
+  bool isLoading = true;
+  String username = '';
+  // var userId;
   @override
   void initState() {
     super.initState();
     _pages = [
-      HomePageBody(userId: widget.userId), // Teruskan userId ke HomePageBody
-      CourseScreen(userId: widget.userId), // Teruskan userId ke CourseScreen
+      HomePageBody(
+        userId: widget.userId,
+        courses: [],
+        isLoading: true,
+        username: username,
+      ), // Teruskan userId ke HomePageBody
+      // CourseScreen(userId: widget.userId, courseId: widget.courseId,), // Teruskan userId ke CourseScreen
       // EditProfileScreen(
       //     userId: widget.userId), // Teruskan userId ke EditProfileScreen
     ];
+    fetchAccount();
+  }
+
+  Future<void> fetchAccount() async {
+    setState(() {
+      isLoading = true;
+    });
+    final urlUser =
+        Uri.parse('http://192.168.100.16:3000/api/Accounts/${widget.userId}');
+    try {
+      final response = await http.get(urlUser);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          username = data['username']; // Simpan username
+        });
+        if (data['User_Type'] == 'Subscriber') {
+          final url = Uri.parse('http://192.168.100.16:3000/api/coursesUser');
+          await fetchCourse(url);
+        } else if (data['User_Type'] == 'Free') {
+          final url = Uri.parse('http://192.168.100.16:3000/api/freeCourses');
+          await fetchCourse(url);
+        }
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error: $e'); // Log error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
+  Future<void> fetchCourse(Uri url) async {
+    try {
+      final response = await http.get(url);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}'); // Cek hasil response
+
+      if (response.statusCode == 200) {
+        print('Data loaded');
+        setState(() {
+          final List<dynamic> courseJson = json.decode(response.body);
+          courses = courseJson.map((json) => Course.fromJson(json)).toList();
+
+          isLoading = false;
+        });
+      } else {
+        print('Failed to load courses');
+        throw Exception('Failed to load courses');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error: $e'); // Log error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
 
   void _onTabTapped(int index) {
@@ -49,7 +124,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages.map((page) {
+          if (page is HomePageBody) {
+            return HomePageBody(
+              courses: courses,
+              isLoading: isLoading,
+              userId: widget.userId,
+              username: username,
+            );
+          }
+          return page;
+        }).toList(),
+      ),
       bottomNavigationBar: CustomNavbar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
@@ -59,17 +147,22 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageBody extends StatelessWidget {
+  final List<Course> courses;
+  final bool isLoading;
+  final String username;
+  const HomePageBody({
+    Key? key,
+    required this.courses,
+    required this.isLoading,
+    required this.userId,
+    required this.username,
+  }) : super(key: key);
   final String userId;
-  const HomePageBody({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
-    // Defining width and height as a percentage of screen dimensions
-    final double widgetWidth = screenWidth * 1; // 50% of screen width
-    // 40% of screen height
-    // 40% of screen height
+    final screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -77,41 +170,44 @@ class HomePageBody extends StatelessWidget {
             Container(
               child: Stack(
                 children: <Widget>[
-                  // CONTAINER CTA
-                  SizedBox(
+                  Container(
                     width: MediaQuery.of(context).size.width,
                     child: CarouselSlider(
                       options: CarouselOptions(
-                        height: MediaQuery.of(context).size.height *
-                            0.6, // Match height with the container
+                        height: MediaQuery.of(context).size.height * 0.5,
                         autoPlay: true,
                         enableInfiniteScroll: true,
                         viewportFraction: 1.0,
                       ),
                       items: [
                         Image.network(
-                            "https://images.unsplash.com/photo-1511376777868-611b54f68947?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            fit: BoxFit.cover),
+                          "https://images.unsplash.com/photo-1511376777868-611b54f68947?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                          fit: BoxFit.cover,
+                        ),
                         Image.network(
-                            "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            fit: BoxFit.cover),
+                          "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                          fit: BoxFit.cover,
+                        ),
                         Image.network(
-                            "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            fit: BoxFit.cover),
+                          "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                          fit: BoxFit.cover,
+                        ),
                       ],
                     ),
                   ),
-                  // Overlay Container for Text and Button
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.5,
                     width: MediaQuery.of(context).size.width * 1,
                     decoration: BoxDecoration(
-                      color: AppColors.buttonColor.withOpacity(
-                          0), // Optional: Add some opacity to background
+                      color: AppColors.buttonColor.withOpacity(0),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          top: 120, right: 30, left: 30, bottom: 20),
+                        top: 120,
+                        right: 30,
+                        left: 30,
+                        bottom: 20,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -119,22 +215,24 @@ class HomePageBody extends StatelessWidget {
                           const Text(
                             "From Beginner to Pro: Your IT Career Starts Here",
                             style: TextStyle(
-                                color: AppColors.textColor,
-                                fontFamily: 'Poppins',
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold),
+                              color: AppColors.textColor,
+                              fontFamily: 'Poppins',
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 15),
                           const Text(
                             "Expand your Skills and hone your Abilities with our Bootcamps",
                             style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Inter',
-                                color: AppColors.textColor,
-                                fontWeight: FontWeight.w400),
+                              fontSize: 12,
+                              fontFamily: 'Inter',
+                              color: AppColors.textColor,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                          const SizedBox(height: 10),
-                          SizedBox(
+                          const SizedBox(height: 15),
+                          Container(
                             width: 130,
                             height: 30,
                             child: TextButton(
@@ -142,25 +240,30 @@ class HomePageBody extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PaymentPage()),
+                                    builder: (context) => PaymentPage(),
+                                  ),
                                 );
                               },
                               style: TextButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    side: BorderSide(
-                                        color: AppColors.textColor, width: 1)),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  side: BorderSide(
+                                    color: AppColors.textColor,
+                                    width: 1,
+                                  ),
+                                ),
                               ),
                               child: const Text(
                                 "Upgrade Your Package",
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    fontFamily: 'Inter',
-                                    color: AppColors.textColor,
-                                    fontWeight: FontWeight.w500),
+                                  fontSize: 10,
+                                  fontFamily: 'Inter',
+                                  color: AppColors.textColor,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
@@ -169,7 +272,6 @@ class HomePageBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // CONTAINER NAVBAR
                   Container(
                     height: 100,
                     alignment: Alignment.center,
@@ -185,31 +287,34 @@ class HomePageBody extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Welcome, Aldino",
+                          Text(
+                            "Welcome, $username",
                             style: TextStyle(
-                                fontSize: 17, color: AppColors.textColor),
+                              fontSize: 17,
+                              color: AppColors.textColor,
+                            ),
                           ),
                           Row(
                             children: [
                               GestureDetector(
                                 onTap: () {
                                   showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text("Warning"),
-                                          content: const Text("Search Feature"),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text("Close"),
-                                            )
-                                          ],
-                                        );
-                                      });
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Warning"),
+                                        content: const Text("Search Feature"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text("Close"),
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                                 child: const CircleAvatar(
                                   backgroundColor: AppColors.secondaryColor,
@@ -220,13 +325,21 @@ class HomePageBody extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              const CircleAvatar(
-                                backgroundColor: AppColors.secondaryColor,
-                                child: Icon(
-                                  Icons.account_circle,
-                                  color: AppColors.textColor,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginScreen()));
+                                },
+                                child: const CircleAvatar(
+                                  backgroundColor: AppColors.secondaryColor,
+                                  child: Icon(
+                                    Icons.account_circle,
+                                    color: AppColors.textColor,
+                                  ),
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ],
@@ -236,476 +349,119 @@ class HomePageBody extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Card Bootcamp
-            Column(
-              children: [
-                Container(
-                  width: screenWidth,
-                  decoration: const BoxDecoration(color: AppColors.textColor),
-                  margin: const EdgeInsets.only(top: 15),
-                  child: Center(
-                    child: Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: [
-                        // Card 1
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      CourseScreen(userId: userId)),
-                            );
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 143,
-                            decoration: const BoxDecoration(
-                                color: AppColors.secondaryColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Image
-                                Container(
-                                  width: 191,
-                                  height: 97.36,
-                                  decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                        image:
-                                            AssetImage("lib/images/uiux.jpg"),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      color: AppColors.buttonColor,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                ),
-                                // Title
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 8.0, left: 5.0),
-                                  child: Text(
-                                    "UI-UX Beginner Class",
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        color: AppColors.textColor),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // Card 2
-                        Container(
-                          width: 160,
-                          height: 143,
-                          decoration: const BoxDecoration(
-                              color: AppColors.secondaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Image
-                              Container(
-                                width: 191,
-                                height: 97.36,
+            isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      width: screenWidth,
+                      child: Center(
+                        child: Wrap(
+                          spacing: 8, // Jarak horizontal antar elemen
+                          runSpacing: 8, // Jarak vertikal antar elemen
+                          children: courses.map((course) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CourseScreen(
+                                          userId: userId,
+                                          courseId: course.id.toString())),
+                                );
+                              },
+                              child: Container(
+                                width: screenWidth * 0.4, // Lebar setiap kartu
+                                height: screenHeight * 0.23,
                                 decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage("lib/images/uiux.jpg"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    color: AppColors.buttonColor,
+                                    color: AppColors.secondaryColor,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10))),
-                              ),
-                              // Title
-                              const Padding(
-                                padding: EdgeInsets.only(top: 8.0, left: 5.0),
-                                child: Text(
-                                  "UI-UX Beginner Class",
-                                  style: TextStyle(
-                                      fontSize: 13, color: AppColors.textColor),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        // Card 3
-                        GestureDetector(
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
-                                duration: Duration(
-                                    seconds: 2), // Durasi snackbar muncul
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 143,
-                            decoration: const BoxDecoration(
-                              color: AppColors.secondaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Image with overlay and lock icon
-                                Stack(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      width: 191,
-                                      height: 97.36,
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              AssetImage("lib/images/uiux.jpg"),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        color: AppColors.buttonColor,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                    ),
-                                    // Overlay
-                                    Container(
-                                      width: 160,
-                                      height: 143,
+                                      width: screenWidth * 0.7,
+                                      height: screenHeight * 0.11,
                                       decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.5),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              'lib/backend-uploads/${course.image}'),
+                                          fit: BoxFit.fill,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
                                       ),
                                     ),
-                                    // Lock Icon and Text
-                                    const Positioned(
-                                      top: 40,
-                                      left: 65,
-                                      child: Icon(
-                                        Icons.lock,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    ),
-                                    const Positioned(
-                                      bottom: 55,
-                                      left: 10,
+                                    // Title
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "Unlock With Subscription",
-                                        style: TextStyle(
-                                          color: Colors.white,
+                                        course.courseName +
+                                            " - " +
+                                            course.level[0].toUpperCase() +
+                                            course.level.substring(1) +
+                                            " Class",
+                                        style: const TextStyle(
                                           fontSize: 12,
+                                          color: AppColors.textColor,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 110.0, left: 5.0),
+                                    // Description
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 3.0, left: 8.0, bottom: 8.0),
                                       child: Text(
-                                        "UI-UX Medium Class",
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: AppColors.textColor),
+                                        "End Date : " + course.description,
+                                        style: const TextStyle(
+                                          fontSize: 10,
+                                          color: AppColors.textColor,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                // Title
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // Card 4
-                        GestureDetector(
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
-                                duration: Duration(
-                                    seconds: 2), // Durasi snackbar muncul
                               ),
                             );
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 143,
-                            decoration: const BoxDecoration(
-                              color: AppColors.secondaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Image with overlay and lock icon
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 191,
-                                      height: 97.36,
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              AssetImage("lib/images/uiux.jpg"),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        color: AppColors.buttonColor,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                    ),
-                                    // Overlay
-                                    Container(
-                                      width: 160,
-                                      height: 143,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.5),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                    ),
-                                    // Lock Icon and Text
-                                    const Positioned(
-                                      top: 40,
-                                      left: 65,
-                                      child: Icon(
-                                        Icons.lock,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    ),
-                                    const Positioned(
-                                      bottom: 55,
-                                      left: 10,
-                                      child: Text(
-                                        "Unlock With Subscription",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 110.0, left: 5.0),
-                                      child: Text(
-                                        "UI-UX Medium Class",
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: AppColors.textColor),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                // Title
-                              ],
-                            ),
-                          ),
+                          }).toList(),
                         ),
-                        // Card 5
-                        GestureDetector(
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
-                                duration: Duration(
-                                    seconds: 2), // Durasi snackbar muncul
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 143,
-                            decoration: const BoxDecoration(
-                              color: AppColors.secondaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Image with overlay and lock icon
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 191,
-                                      height: 97.36,
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              AssetImage("lib/images/uiux.jpg"),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        color: AppColors.buttonColor,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                    ),
-                                    // Overlay
-                                    Container(
-                                      width: 160,
-                                      height: 143,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.5),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                    ),
-                                    // Lock Icon and Text
-                                    const Positioned(
-                                      top: 40,
-                                      left: 65,
-                                      child: Icon(
-                                        Icons.lock,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    ),
-                                    const Positioned(
-                                      bottom: 55,
-                                      left: 10,
-                                      child: Text(
-                                        "Unlock With Subscription",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 110.0, left: 5.0),
-                                      child: Text(
-                                        "UI-UX Expert Class",
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: AppColors.textColor),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                // Title
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Card 6
-                        GestureDetector(
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    "Maaf, Anda tidak terdaftar dalam paket berlangganan"),
-                                duration: Duration(
-                                    seconds: 2), // Durasi snackbar muncul
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 143,
-                            decoration: const BoxDecoration(
-                              color: AppColors.secondaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Image with overlay and lock icon
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 191,
-                                      height: 97.36,
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              AssetImage("lib/images/uiux.jpg"),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        color: AppColors.buttonColor,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                    ),
-                                    // Overlay
-                                    Container(
-                                      width: 160,
-                                      height: 143,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.5),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                    ),
-                                    // Lock Icon and Text
-                                    const Positioned(
-                                      top: 40,
-                                      left: 65,
-                                      child: Icon(
-                                        Icons.lock,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    ),
-                                    const Positioned(
-                                      bottom: 55,
-                                      left: 10,
-                                      child: Text(
-                                        "Unlock With Subscription",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 110.0, left: 5.0),
-                                      child: Text(
-                                        "UI-UX Expert Class",
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: AppColors.textColor),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                // Title
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class Course {
+  final int id;
+  final String image;
+  final String courseName;
+  final String level;
+  final String description;
+
+  Course({
+    required this.id,
+    required this.image,
+    required this.level,
+    required this.courseName,
+    required this.description,
+  });
+
+  factory Course.fromJson(Map<String, dynamic> json) {
+    return Course(
+      id: json['id'],
+      image: json['image'],
+      level: json['level'],
+      courseName: json['course_name'],
+      description: json['description'],
     );
   }
 }
