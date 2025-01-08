@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'courseSubmit.dart';
 
 class Videopage extends StatefulWidget {
-  const Videopage({super.key});
+  final String userId;
+  final String courseId;
+
+  const Videopage({Key? key, required this.userId, required this.courseId})
+      : super(key: key);
 
   @override
   State<Videopage> createState() => _VideopageState();
@@ -12,6 +16,8 @@ class Videopage extends StatefulWidget {
 class _VideopageState extends State<Videopage> {
   @override
   Widget build(BuildContext context) {
+    final String userId = widget.userId;
+    final String courseId = widget.courseId;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -75,7 +81,10 @@ class _VideopageState extends State<Videopage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  const Coursesubmit(),
+                      builder: (context) =>  Coursesubmit(
+                        userId: userId,
+                                          courseId: courseId.toString(),
+                      ),
                     ),
                   );
                 },
