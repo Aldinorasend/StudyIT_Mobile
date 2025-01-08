@@ -363,7 +363,7 @@ class HomePageBody extends StatelessWidget {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.of(context).pop();
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => CourseScreen(
