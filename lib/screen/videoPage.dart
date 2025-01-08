@@ -36,7 +36,7 @@ class _VideopageState extends State<Videopage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SamplePlayer(),
+            SamplePlayer(courseId: widget.courseId,),
 
             Container(
               height: 80,

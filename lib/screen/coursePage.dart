@@ -80,7 +80,7 @@ class _CourseScreenState extends State<CourseScreen> {
                             icon: const Icon(Icons.arrow_back,
                                 color: Colors.white),
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             },
                           ),
                         ),
@@ -107,7 +107,7 @@ class _CourseScreenState extends State<CourseScreen> {
                         ),
                       ),
                       child: ExpansionTile(
-                        title: const Text('What you’ll learnsss',
+                        title: const Text('What you’ll learn',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         initiallyExpanded: _learnExpanded,
                         onExpansionChanged: (bool expanded) {
@@ -151,7 +151,7 @@ class _CourseScreenState extends State<CourseScreen> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                modulData?['Task'] ?? 'No description',
+                                modulData?[''] ?? 'No tools added by instructor',
                                 style: const TextStyle(fontSize: 14),
                                 // textAlign: TextAlign.left,
                               ),
