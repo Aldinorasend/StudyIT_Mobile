@@ -15,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _inputController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isLoggedIn = false;
@@ -23,18 +23,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      final String email = _emailController.text;
+      final String input = _inputController.text;
       final String password = _passwordController.text;
 
       // Data untuk login
       final Map<String, dynamic> data = {
-        "email": email,
+        "email": input,
+        "username": input,
         "password": password,
       };
 
       try {
         const String BASE_URL =
-            "http://192.168.100.82:3000"; // Ganti dengan URL backend Anda
+            "http://192.168.100.10:3000"; // Ganti dengan URL backend Anda
         final response = await http.post(
           Uri.parse('$BASE_URL/api/Accounts/search'),
           headers: {"Content-Type": "application/json"},
@@ -122,12 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 40),
                   const Text(
-                    "Email",
+                    "Emai or Username",
                     style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
                   const SizedBox(height: 5),
                   TextFormField(
-                    controller: _emailController,
+                    controller: _inputController,
                     decoration: InputDecoration(
                       errorStyle: const TextStyle(color: Colors.red),
                       enabledBorder: OutlineInputBorder(
@@ -144,10 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Email is required.';
-                      }
-                      if (!value.contains('@') || !value.contains('.')) {
-                        return 'Enter a valid email address.';
+                        return 'Email or Username is required.';
                       }
                       return null;
                     },
