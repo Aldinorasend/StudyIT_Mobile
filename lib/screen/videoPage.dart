@@ -5,8 +5,9 @@ import 'courseSubmit.dart';
 class Videopage extends StatefulWidget {
   final String userId;
   final String courseId;
+  final String title;
 
-  const Videopage({Key? key, required this.userId, required this.courseId})
+  const Videopage({Key? key, required this.userId, required this.courseId, required this.title})
       : super(key: key);
 
   @override
@@ -53,7 +54,7 @@ class _VideopageState extends State<Videopage> {
                   ),
                 ],
               ),
-              child: const Padding(
+              child:  Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Center(
                   child: Row(
@@ -61,7 +62,7 @@ class _VideopageState extends State<Videopage> {
                     children: [
                       SizedBox(width: 8),
                       Text(
-                        'What is UI & UX Design?',
+                        widget.title,
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
