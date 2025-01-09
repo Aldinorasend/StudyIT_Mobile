@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 40),
                   const Text(
-                    "Emai or Username",
+                    "Email or Username",
                     style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
                   const SizedBox(height: 5),
