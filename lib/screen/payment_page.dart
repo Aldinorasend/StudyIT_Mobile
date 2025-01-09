@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'billing_page.dart';
 import 'package:studyit/package/NavbarBottom.dart';
+
 class AppColors {
-  static const Color primaryColor = Color(0xFF113F67);   
-  static const Color secondaryColor = Color(0xFF276AA4); 
-  static const Color textColor = Color(0xFFFFFFFF);      
-  static const Color buttonColor = Color(0xFFD9D9D9);    
+  static const Color primaryColor = Color(0xFF113F67);
+  static const Color secondaryColor = Color(0xFF276AA4);
+  static const Color textColor = Color(0xFFFFFFFF);
+  static const Color buttonColor = Color(0xFFD9D9D9);
 }
+
 class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key});
+  const PaymentPage({super.key, required String userId});
 
   @override
   _PaymentPageState createState() => _PaymentPageState();
@@ -90,7 +92,8 @@ class _PaymentPageState extends State<PaymentPage> {
             const SizedBox(height: 20),
             _buildPaymentMethodSelector(), // memilih metode pembayaran
             const SizedBox(height: 30),
-            const Text('Name on Card', style: TextStyle(color: AppColors.textColor)),
+            const Text('Name on Card',
+                style: TextStyle(color: AppColors.textColor)),
             const SizedBox(height: 5),
             _buildPaymentField(
               '',
@@ -102,7 +105,8 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
             const SizedBox(height: 30),
             // Label dan input untuk nomor kartu
-            const Text('Card Number', style: TextStyle(color: AppColors.textColor)),
+            const Text('Card Number',
+                style: TextStyle(color: AppColors.textColor)),
             const SizedBox(height: 5),
             _buildPaymentField(
               '',
@@ -117,7 +121,8 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
             const SizedBox(height: 30),
             // Label dan input bulan dan tahun
-            const Text('Card Expiration', style: TextStyle(color: AppColors.textColor)),
+            const Text('Card Expiration',
+                style: TextStyle(color: AppColors.textColor)),
             const SizedBox(height: 5),
             _buildExpirationFields(),
             const SizedBox(height: 30),
@@ -148,7 +153,10 @@ class _PaymentPageState extends State<PaymentPage> {
         children: [
           const Text(
             'Payment Method',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor),
           ),
           const SizedBox(width: 50),
           // Opsi untuk metode pembayaran
@@ -213,7 +221,8 @@ class _PaymentPageState extends State<PaymentPage> {
       children: [
         Expanded(
           child: _ExpirationDropdown(
-            items: List.generate(12, (index) => (index + 1).toString().padLeft(2, '0')),
+            items: List.generate(
+                12, (index) => (index + 1).toString().padLeft(2, '0')),
             hint: 'Month',
             value: selectedMonth,
             onChanged: (value) {
@@ -247,8 +256,10 @@ class _PaymentPageState extends State<PaymentPage> {
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => BillingAddressScreen(),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        BillingAddressScreen(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
                       return FadeTransition(
                         opacity: animation,
                         child: child,
@@ -260,9 +271,10 @@ class _PaymentPageState extends State<PaymentPage> {
             : null,
         style: ElevatedButton.styleFrom(
           foregroundColor: AppColors.secondaryColor,
-          backgroundColor: _isFormValid && selectedMonth != null && selectedYear != null
-              ? AppColors.buttonColor
-              : Colors.grey.withOpacity(0.5),
+          backgroundColor:
+              _isFormValid && selectedMonth != null && selectedYear != null
+                  ? AppColors.buttonColor
+                  : Colors.grey.withOpacity(0.5),
           minimumSize: const Size(double.infinity, 55),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -298,7 +310,8 @@ class _ExpirationDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: AppColors.textColor),
@@ -316,7 +329,9 @@ class _ExpirationDropdown extends StatelessWidget {
                 child: Text(
                   item,
                   style: TextStyle(
-                    color: value == item ? AppColors.textColor : AppColors.primaryColor,
+                    color: value == item
+                        ? AppColors.textColor
+                        : AppColors.primaryColor,
                   ),
                 ),
               ))
