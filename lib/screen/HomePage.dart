@@ -52,9 +52,9 @@ class _HomePageState extends State<HomePage> {
         username: username,
         userType: userType,
       ), // Teruskan userId ke HomePageBody
-      Listofcourse(userId: widget.userId)
-      // EditProfileScreen(
-      //     userId: widget.userId), // Teruskan userId ke EditProfileScreen
+      Listofcourse(userId: widget.userId),
+      EditProfileScreen(
+          userId: widget.userId), // Teruskan userId ke EditProfileScreen
     ];
     fetchAccount();
   }
