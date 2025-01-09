@@ -166,12 +166,12 @@ class _CourseScreenState extends State<CourseScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     // Navigasi ke halaman Videopage
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Videopage(
                           userId: userId,
-                                          courseId: courseId.toString(),
+                          courseId: courseId.toString(),
                         ),
                       ),
                     );
@@ -184,7 +184,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     foregroundColor: Colors.white,
                   ),
                   child: const Text(
-                    'Enroll Course',
+                    'Modul',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
