@@ -2,27 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Edit Profile',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const EditProfileScreen(
-        userId: '',
-      ),
-    );
-  }
-}
-
 class AppColors {
   static const Color primaryColor = Color(0xFF113F67);
   static const Color secondaryColor = Color(0xFF276AA4);

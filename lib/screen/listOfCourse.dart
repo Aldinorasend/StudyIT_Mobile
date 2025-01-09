@@ -22,9 +22,7 @@ class AppColors {
 class Listofcourse extends StatefulWidget {
   final String userId;
   final bool subscriber = false;
-  // var courseId;
 
-  // Tambahkan userId sebagai parameter
   const Listofcourse({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -32,14 +30,13 @@ class Listofcourse extends StatefulWidget {
 }
 
 class _ListOfCourseState extends State<Listofcourse> {
-  int _currentIndex = 0; // To handle the current index of the navbar
+  int _currentIndex = 0;
   late final List<Widget> _pages;
   List<Course> courses = [];
   bool isLoading = true;
   String username = '';
   String userType = '';
 
-  // var userId;
   @override
   void initState() {
     super.initState();
@@ -50,10 +47,10 @@ class _ListOfCourseState extends State<Listofcourse> {
         isLoading: true,
         username: username,
         userType: userType,
-      ), // Teruskan userId ke HomePageBody
-      // CourseScreen(userId: widget.userId, courseId: widget.courseId,),
-      // EditProfileScreen(
-      //     userId: widget.userId), // Teruskan userId ke EditProfileScreen
+        onSortByLevel: fetchSortedCourses, // Pass the method to sort courses
+        onNormalFetch:
+            fetchNormalCourses, // Pass the method to fetch courses normally
+      ),
     ];
     fetchAccount();
   }
@@ -72,23 +69,21 @@ class _ListOfCourseState extends State<Listofcourse> {
         final data = jsonDecode(response.body);
         setState(() {
           username = data['username'];
-          userType = data['User_Type']; // Simpan username
+          userType = data['User_Type'];
         });
         if (data['User_Type'] == 'Subscriber') {
           final url = Uri.parse('http://192.168.100.16:3000/api/coursesUser');
           await fetchCourse(url);
-          userType = data['User_Type'];
         } else if (data['User_Type'] == 'Free') {
           final url = Uri.parse('http://192.168.100.16:3000/api/freeCourses');
           await fetchCourse(url);
-          userType = data['User_Type'];
         }
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      print('Error: $e'); // Log error
+      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
@@ -99,14 +94,12 @@ class _ListOfCourseState extends State<Listofcourse> {
     try {
       final response = await http.get(url);
       print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}'); // Cek hasil response
-
+      print('Response body: ${response.body}');
       if (response.statusCode == 200) {
         print('Data loaded');
         setState(() {
           final List<dynamic> courseJson = json.decode(response.body);
           courses = courseJson.map((json) => Course.fromJson(json)).toList();
-
           isLoading = false;
         });
       } else {
@@ -117,11 +110,37 @@ class _ListOfCourseState extends State<Listofcourse> {
       setState(() {
         isLoading = false;
       });
-      print('Error: $e'); // Log error
+      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
     }
+  }
+
+  Future<void> fetchSortedCourses() async {
+    setState(() {
+      isLoading = true;
+    });
+    Uri url;
+    if (userType == 'Subscriber') {
+      url = Uri.parse('http://192.168.100.16:3000/api/coursesSortedSubscriber');
+    } else {
+      url = Uri.parse('http://192.168.100.16:3000/api/coursesSortedFree');
+    }
+    await fetchCourse(url);
+  }
+
+  Future<void> fetchNormalCourses() async {
+    setState(() {
+      isLoading = true;
+    });
+    Uri url;
+    if (userType == 'Subscriber') {
+      url = Uri.parse('http://192.168.100.16:3000/api/coursesUser');
+    } else {
+      url = Uri.parse('http://192.168.100.16:3000/api/freeCourses');
+    }
+    await fetchCourse(url);
   }
 
   void _onTabTapped(int index) {
@@ -143,6 +162,8 @@ class _ListOfCourseState extends State<Listofcourse> {
               userId: widget.userId,
               username: username,
               userType: userType,
+              onSortByLevel: fetchSortedCourses,
+              onNormalFetch: fetchNormalCourses,
             );
           }
           return page;
@@ -157,6 +178,9 @@ class ListOfCoursePageBody extends StatelessWidget {
   final bool isLoading;
   final String username;
   final String userType;
+  final Function onSortByLevel;
+  final Function onNormalFetch;
+
   const ListOfCoursePageBody({
     Key? key,
     required this.courses,
@@ -164,7 +188,10 @@ class ListOfCoursePageBody extends StatelessWidget {
     required this.userId,
     required this.username,
     required this.userType,
+    required this.onSortByLevel,
+    required this.onNormalFetch,
   }) : super(key: key);
+
   final String userId;
 
   @override
@@ -179,7 +206,7 @@ class ListOfCoursePageBody extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    "List of Courses",
+                    "Course List",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -187,20 +214,42 @@ class ListOfCoursePageBody extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
+                Padding(
+                  padding: EdgeInsets.all(10),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        child: Text("Sort By"),
+                        child: Row(
+                          children: [
+                            Text("Sort By",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold)),
+                            SizedBox(width: 10),
+                            Icon(Icons.filter_alt_rounded, size: 17)
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
-                          Container(
-                            child: Center(child: Text("data")),
-                            width: 40,
-                            height: 20,
-                            decoration:
-                                BoxDecoration(color: AppColors.buttonColor),
+                          GestureDetector(
+                            onTap: () => onSortByLevel(),
+                            onLongPress: () => onNormalFetch(),
+                            child: Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Center(
+                                  child: Text(
+                                "Level",
+                                style: TextStyle(color: AppColors.textColor),
+                              )),
+                              width: 50,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  color: AppColors.secondaryColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(7))),
+                            ),
                           )
                         ],
                       )
@@ -224,11 +273,10 @@ class ListOfCoursePageBody extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          width: screenWidth, // Full width of the screen
-                          margin: const EdgeInsets.only(
-                              bottom: 10.0), // Margin between items
+                          width: screenWidth,
+                          margin: const EdgeInsets.only(bottom: 10.0),
                           decoration: const BoxDecoration(
-                              color: AppColors.secondaryColor,
+                              color: AppColors.primaryColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
                           child: Column(
@@ -237,12 +285,12 @@ class ListOfCoursePageBody extends StatelessWidget {
                             children: [
                               Container(
                                 width: screenWidth,
-                                height: screenHeight * 0.23,
+                                height: screenHeight * 0.25,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: AssetImage(
                                         'lib/backend-uploads/${course.image}'),
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.fill,
                                   ),
                                   borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(10),
@@ -264,7 +312,7 @@ class ListOfCoursePageBody extends StatelessWidget {
                               // Description
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 3.0, left: 8.0, bottom: 8.0),
+                                    top: 3.0, left: 8.0, bottom: 20.0),
                                 child: Text(
                                   "End Date : ${DateFormat('dd MMM yyyy').format(course.endDate)}",
                                   style: const TextStyle(
