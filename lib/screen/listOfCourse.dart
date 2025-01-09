@@ -220,7 +220,8 @@ class ListOfCoursePageBody extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => CourseScreen(
                                     userId: userId,
-                                    courseId: course.id.toString())),
+                                    courseId: course.id.toString(),
+                                    endDate: course.endDate,)),
                           );
                         },
                         child: Container(
