@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
       isLoading = true;
     });
     final urlUser =
-        Uri.parse('http://192.168.100.16:3000/api/Accounts/${widget.userId}');
+        Uri.parse('http://192.168.100.82:3000/api/Accounts/${widget.userId}');
     try {
       final response = await http.get(urlUser);
       print('Response status: ${response.statusCode}');
@@ -68,10 +68,10 @@ class _HomePageState extends State<HomePage> {
           username = data['username']; // Simpan username
         });
         if (data['User_Type'] == 'Subscriber') {
-          final url = Uri.parse('http://192.168.100.16:3000/api/coursesUser');
+          final url = Uri.parse('http://192.168.100.82:3000/api/coursesUser');
           await fetchCourse(url);
         } else if (data['User_Type'] == 'Free') {
-          final url = Uri.parse('http://192.168.100.16:3000/api/freeCourses');
+          final url = Uri.parse('http://192.168.100.82:3000/api/freeCourses');
           await fetchCourse(url);
         }
       }
@@ -362,7 +362,7 @@ class HomePageBody extends StatelessWidget {
                           children: courses.map((course) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.of(context).pop();
+                                // Navigator.of(context).pop();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
