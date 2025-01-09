@@ -81,22 +81,17 @@ class _RegisterPageState extends State<RegisterPage> {
     return null;
   }
 
+  String? _validateConfPassword(String value) {
+    if (value != _passwordController.text) {
+      return 'Passwords do not match.';
+    }
+    return null;
+  }
+
   void _onSubmit() async {
     print("Username: ${_usernameController.text}");
     print("Password: ${_passwordController.text}");
     if (_formKey.currentState!.validate()) {
-      final password = _passwordController.text;
-      if (password != _confirmPasswordController.text) {
-        setState(() {
-          _passwordError = 'Passwords do not match.';
-        });
-        return;
-      }
-
-      setState(() {
-        _passwordError = null;
-      });
-
       // Data untuk registrasi
       final Map<String, dynamic> data = {
         "username": _usernameController.text,
@@ -403,6 +398,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     style: const TextStyle(color: Colors.white),
+                    validator: (value) => _validateConfPassword(value ?? ''),
                   ),
                   const SizedBox(height: 40),
                   ElevatedButton(
