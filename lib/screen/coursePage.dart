@@ -30,7 +30,7 @@ class _CourseScreenState extends State<CourseScreen> {
 
   Future<void> fetchModulData() async {
     final String url =
-        'http://192.168.100.16:3000/api/modulsByCourseID/${widget.courseId}';
+        'http://192.168.100.82:3000/api/modulsByCourseID/${widget.courseId}';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -55,6 +55,7 @@ class _CourseScreenState extends State<CourseScreen> {
   Widget build(BuildContext context) {
     final String userId = widget.userId;
     final String courseId = widget.courseId;
+    final String title = modulData?['Title'] ?? 'Course Title';
     print(modulData);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -89,7 +90,7 @@ class _CourseScreenState extends State<CourseScreen> {
                           child: Text(
                             modulData?['Title'] ?? 'Course Title',
                             style: const TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.w400,
                             ),
@@ -97,7 +98,7 @@ class _CourseScreenState extends State<CourseScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    // const SizedBox(height: 16),
                     Container(
                       decoration: const BoxDecoration(
                         border: Border(
@@ -172,6 +173,7 @@ class _CourseScreenState extends State<CourseScreen> {
                               builder: (context) => Videopage(
                                 userId: userId,
                                 courseId: courseId.toString(),
+                                title: title,
                               ),
                             ),
                           );
