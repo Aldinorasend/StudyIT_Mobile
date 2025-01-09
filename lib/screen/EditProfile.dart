@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const EditProfileScreen(),
+      home: const EditProfileScreen(
+        userId: '',
+      ),
     );
   }
 }
@@ -29,7 +31,7 @@ class AppColors {
 }
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  const EditProfileScreen({super.key, required String userId});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -101,8 +103,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     radius: 50,
                     backgroundImage: _profileImage != null
                         ? FileImage(_profileImage!) as ImageProvider
-                        : const NetworkImage(
-                            'https://via.placeholder.com/150'),
+                        : const NetworkImage('https://via.placeholder.com/150'),
                   ),
                   Positioned(
                     bottom: 0,

@@ -30,14 +30,13 @@ class _CourseScreenState extends State<CourseScreen> {
 
   Future<void> fetchModulData() async {
     final String url =
-        'http://192.168.100.82:3000/api/modulsByCourseID/${widget.courseId}';
+        'http://192.168.100.16:3000/api/modulsByCourseID/${widget.courseId}';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         setState(() {
           modulData = jsonDecode(response.body);
           isLoading = false;
-          
         });
       } else {
         throw Exception('Failed to load modul data');
@@ -151,7 +150,8 @@ class _CourseScreenState extends State<CourseScreen> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                modulData?[''] ?? 'No tools added by instructor',
+                                modulData?[''] ??
+                                    'No tools added by instructor',
                                 style: const TextStyle(fontSize: 14),
                                 // textAlign: TextAlign.left,
                               ),
@@ -161,35 +161,35 @@ class _CourseScreenState extends State<CourseScreen> {
                       ),
                     ),
                     const SizedBox(height: 310),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Navigasi ke halaman Videopage
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Videopage(
-                          userId: userId,
-                          courseId: courseId.toString(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Navigasi ke halaman Videopage
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Videopage(
+                                userId: userId,
+                                courseId: courseId.toString(),
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 48),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          backgroundColor: const Color(0xFF113F67),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text(
+                          'Modul',
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 48),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    backgroundColor: const Color(0xFF113F67),
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text(
-                    'Modul',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 100)
+                    ),
+                    const SizedBox(height: 100)
                   ],
                 ),
               ),
