@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:studyit/screen/coursePage.dart' as coursePage;
 
 class AppColors {
   static const Color primaryColor = Color(0xFF113F67);
@@ -10,7 +14,8 @@ class AppColors {
 }
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key, required String userId});
+  final String userId;
+  const EditProfileScreen({super.key, required this.userId});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -27,9 +32,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       TextEditingController(text: 'Jalan palem hijau');
 
   File? _profileImage;
+  String? _profileImageUrl;
   final ImagePicker _picker = ImagePicker();
 
-  // Dispose controllers when the widget is removed from the widget tree
   @override
   void dispose() {
     nameController.dispose();
@@ -39,22 +44,103 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Select Image Source'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final pickedFile =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  if (pickedFile != null) {
+                    setState(() {
+                      _profileImage = File(pickedFile.path);
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo),
+                title: const Text('Gallery'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final pickedFile =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  if (pickedFile != null) {
+                    setState(() {
+                      _profileImage = File(pickedFile.path);
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> getUserData() async {
+    final response = await http.get(
+      Uri.parse('http://192.168.100.16:3000/api/Accounts/${widget.userId}'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
       setState(() {
-        _profileImage = File(pickedFile.path);
+        nameController.text = data['firstname'];
+        emailController.text = data['email'];
+        phoneController.text = data['phonenumber'];
+        addressController.text = data['address'] ?? '';
+        _profileImageUrl = data['profileImageUrl'];
       });
+    } else {
+      throw Exception('Failed to load user data');
+    }
+  }
+
+  Future<void> updateUserData() async {
+    final response = await http.put(
+      Uri.parse('http://192.168.100.16:3000/api/Accounts/${widget.userId}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'firstname': nameController.text,
+        'email': emailController.text,
+        'phonenumber': phoneController.text,
+        // 'address': addressController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Changes saved successfully!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else {
+      throw Exception('Failed to update user data');
     }
   }
 
   void _saveChanges() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Changes saved successfully!'),
-        duration: Duration(seconds: 2),
-      ),
-    );
+    updateUserData();
   }
 
   @override
@@ -82,7 +168,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     radius: 50,
                     backgroundImage: _profileImage != null
                         ? FileImage(_profileImage!) as ImageProvider
-                        : const NetworkImage('https://via.placeholder.com/150'),
+                        : _profileImageUrl != null
+                            ? NetworkImage(_profileImageUrl!)
+                            : const NetworkImage(
+                                'https://via.placeholder.com/150'),
                   ),
                   Positioned(
                     bottom: 0,
