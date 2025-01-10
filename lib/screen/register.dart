@@ -105,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
       try {
         // Kirim data ke API
         const String BASE_URL =
-            "http://192.168.100.10:3000"; // Ganti dengan URL backend Anda
+            "http://192.168.1.13:3000"; // Ganti dengan URL backend Anda
         final response = await http.post(
           Uri.parse('$BASE_URL/api/Accounts'),
           headers: {"Content-Type": "application/json"},
