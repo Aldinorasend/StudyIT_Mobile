@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       try {
         const String BASE_URL =
-            "http://192.168.100.10:3000"; // Ganti dengan URL backend Anda
+            "http://192.168.1.13:3000"; // Ganti dengan URL backend Anda
         final response = await http.post(
           Uri.parse('$BASE_URL/api/Accounts/search'),
           headers: {"Content-Type": "application/json"},
@@ -231,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const OtpPage()),
+                                  builder: (context) => const EmailInputPage()),
                             );
                           },
                           child: const Text(

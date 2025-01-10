@@ -1,79 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:studyit/screen/login.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class OtpPage extends StatelessWidget {
-  const OtpPage({super.key});
+class EmailInputPage extends StatefulWidget {
+  const EmailInputPage({super.key});
+
+  @override
+  State<EmailInputPage> createState() => _EmailInputPageState();
+}
+
+class _EmailInputPageState extends State<EmailInputPage> {
+  final TextEditingController _emailController = TextEditingController();
+  bool _isSubmitting = false;
+
+  Future<void> _requestOtp() async {
+    final email = _emailController.text.trim();
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email is required.')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    try {
+      const String BASE_URL = "http://192.168.1.13:3000";
+      final response = await http.post(
+        Uri.parse('$BASE_URL/api/Accounts/request-reset-otp'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"email": email}),
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => OTPVerificationScreen(email: email)),
+        );
+      } else {
+        final errorMessage =
+            jsonDecode(response.body)['error'] ?? 'Failed to send OTP.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $errorMessage')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      setState(() {
+        _isSubmitting = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-            // Aksi saat tombol kembali ditekan
-          },
-        ),
+        title: const Text('Forgot Password - Email'),
+        backgroundColor: const Color(0xFF113F67),
       ),
-      backgroundColor:
-          const Color(0xFF113F67), // Warna latar belakang sesuai gambar
+      backgroundColor: const Color(0xFF113F67),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 50), // Memberikan jarak dari atas
             const Text(
-              'Forgot Your Password?',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              'Enter your registered email to receive an OTP.',
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
-                hintText: 'Enter your Email below',
-                hintStyle: const TextStyle(color: Colors.white),
+                hintText: 'Email',
+                hintStyle: const TextStyle(color: Colors.white70),
                 filled: true,
-                fillColor: const Color(0xFF083358), // Warna input field
+                fillColor: const Color(0xFF083358),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
                 ),
               ),
               style: const TextStyle(color: Colors.white),
-              keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Pindah ke halaman OTP Verification
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OTPVerificationScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text(
-                  'Continue',
-                  selectionColor: Color(0xFF0E4373),
-                ),
+            ElevatedButton(
+              onPressed: _isSubmitting ? null : _requestOtp,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF113F67),
               ),
+              child: _isSubmitting
+                  ? const CircularProgressIndicator()
+                  : const Text('Request OTP'),
             ),
           ],
         ),
@@ -83,7 +110,9 @@ class OtpPage extends StatelessWidget {
 }
 
 class OTPVerificationScreen extends StatefulWidget {
-  const OTPVerificationScreen({super.key});
+  final String email;
+
+  OTPVerificationScreen({required this.email});
 
   @override
   _OTPVerificationScreenState createState() => _OTPVerificationScreenState();
@@ -128,39 +157,36 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-      backgroundColor:
-          const Color(0xFF113F67), // Warna latar belakang sesuai gambar
+      backgroundColor: Color(0xFF113F67), // Warna latar belakang sesuai gambar
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 50), // Memberikan jarak dari atas
+            SizedBox(height: 50), // Memberikan jarak dari atas
             Text(
               'OTP Verification',
-              style: GoogleFonts.lato(
-                textStyle: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-            const SizedBox(height: 10),
-            const Text(
+            SizedBox(height: 10),
+            Text(
               'Open your Email to see your verification code',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -170,30 +196,29 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 _buildOTPField(index: 3),
               ],
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Aksi ketika tombol OTP ditekan
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Aksi ketika tombol OTP ditekan
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResetPasswordPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Continue',
-                  selectionColor: Color(0xFF0E4373),
-                ),
-              ),
-            ),
+                  child: Text(
+                    'Continue',
+                    selectionColor: Color(0xFF0E4373),
+                  ),
+                )),
           ],
         ),
       ),
@@ -210,14 +235,14 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         focusNode: _focusNodes[index],
         decoration: InputDecoration(
           filled: true,
-          fillColor: const Color(0xFF083358), // Warna kotak OTP
+          fillColor: Color(0xFF083358), // Warna kotak OTP
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide.none,
           ),
           counterText: "",
         ),
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 24,
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -233,9 +258,144 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
           }
         },
         onTap: () {
-          _controllers[index].selection =
-              const TextSelection.collapsed(offset: 0);
+          _controllers[index].selection = TextSelection.collapsed(offset: 0);
         },
+      ),
+    );
+  }
+}
+
+class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({super.key});
+
+  @override
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
+}
+
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  bool _isSubmitting = false;
+
+  Future<void> _resetPassword() async {
+    final email = _emailController.text.trim();
+    final newPassword = _newPasswordController.text;
+
+    // Validasi input
+    if (email.isEmpty || newPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Email and new password must be provided.')),
+      );
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Password must be at least 8 characters long.')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    try {
+      const String BASE_URL = "http://192.168.1.13:3000"; // URL backend Anda
+      final response = await http.post(
+        Uri.parse('$BASE_URL/api/Accounts/reset-password-otp'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({'email': email, 'newPassword': newPassword}),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password reset successfully.')),
+        );
+
+        Navigator.popUntil(
+            context, (route) => route.isFirst); // Kembali ke halaman awal
+      } else {
+        final errorMessage =
+            jsonDecode(response.body)['error'] ?? 'Password reset failed.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $errorMessage')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      setState(() {
+        _isSubmitting = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Forgot Password - Reset'),
+        backgroundColor: const Color(0xFF113F67),
+      ),
+      backgroundColor: const Color(0xFF113F67),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Enter your email and new password.',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                hintText: 'Email',
+                hintStyle: const TextStyle(color: Colors.white70),
+                filled: true,
+                fillColor: const Color(0xFF083358),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _newPasswordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                hintText: 'New Password',
+                hintStyle: const TextStyle(color: Colors.white70),
+                filled: true,
+                fillColor: const Color(0xFF083358),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _isSubmitting ? null : _resetPassword,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF113F67),
+              ),
+              child: _isSubmitting
+                  ? const CircularProgressIndicator()
+                  : const Text('Reset Password'),
+            ),
+          ],
+        ),
       ),
     );
   }
